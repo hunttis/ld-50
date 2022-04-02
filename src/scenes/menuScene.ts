@@ -31,7 +31,7 @@ export class MenuScene extends Phaser.Scene {
   createGameTitle() {
     const cameraWidth = this.cameras.default.width;
 
-    const text1 = this.add.text(0, 100, "Game name", { font: "128px Arial" });
+    const text1 = this.add.text(0, 100, "Ludum Dare 50", { font: "64px Arial" });
     text1.setTint(0xff00ff, 0xffff00, 0x0000ff, 0xff0000);
     text1.x = cameraWidth / 2 - text1.width / 2;
   }

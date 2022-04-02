@@ -7,18 +7,22 @@ export function startGame() {
     scale: {
       mode: Phaser.Scale.FIT,
       autoCenter: Phaser.Scale.CENTER_BOTH,
-      width: 800,
-      height: 600,
+      width: 1280,
+      height: 720,
     },
     physics: {
-      default: "arcade",
-      arcade: {
-        debug: true,
+      default: "matter",
+      matter: {
+        // debug: {
+        //   showBody: true,
+        //   showStaticBody: true,
+        //   showSensors: true
+        // }
       },
     },
     parent: "game",
     backgroundColor: "#0f0f0f",
-    scene: [MenuScene],
+    scene: [GameScene],
   };
 
   return new Phaser.Game(config);
