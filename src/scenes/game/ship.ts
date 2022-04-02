@@ -1,5 +1,6 @@
 import { CollisionGroup } from "./collisions";
 import { Planet } from "./planet";
+import { EVENTS, eventsManager } from "../../eventsManager";
 
 enum ShipState {
     Launching,
@@ -12,6 +13,8 @@ const FLYING_DELAY = 3
 
 export class Ship extends Phaser.Physics.Matter.Sprite{
     #state: ShipState = ShipState.Launching
+    #destroyed = false
+    #saved = false
 
     flyingTime = 3
 
@@ -27,9 +30,10 @@ export class Ship extends Phaser.Physics.Matter.Sprite{
         this.setCollisionCategory(CollisionGroup.Ship)
         this.setCollidesWith(CollisionGroup.Meteor | CollisionGroup.Shield)
         this.setOnCollide(() => {
+            this.#destroyed = true
             this.destroy()
         })
-        
+
         this.setAngle(Phaser.Math.RadToDeg(angle));
         this.scene.add.existing(this)
 
@@ -50,6 +54,10 @@ export class Ship extends Phaser.Physics.Matter.Sprite{
     }
 
     #warp = () => {
+        if (!this.visible && !this.#destroyed && !this.#saved) {
+            eventsManager.emit(EVENTS.POD_ESCAPED)
+            this.#saved = true
+        }
         this.#state = ShipState.Warping
         this.destroy()
     }

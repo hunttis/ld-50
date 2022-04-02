@@ -3,7 +3,7 @@ import { Meteor } from "./game/meteor";
 import { Ship } from "./game/ship";
 import { Shield } from "./game/shield";
 import { BigMeteor } from "./game/bigMeteor";
-import { UiScene } from "./uiScene"
+import { EVENTS, eventsManager } from "../eventsManager";
 
 export class GameScene extends Phaser.Scene {
   cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -17,6 +17,7 @@ export class GameScene extends Phaser.Scene {
 
   meteorMaximum = 10;
   secondsGate = 1;
+  peopleInEscapePod = 100
 
   peopleToSave = 7000000000
   peopleSaved = 0
@@ -40,8 +41,6 @@ export class GameScene extends Phaser.Scene {
 
     this.load.image("box", "assets/images/box.png");
     this.load.image("box2", "assets/images/box2.png");
-
-    this.scene.add("UiScene", UiScene, false);
   }
 
   create() {
@@ -58,6 +57,11 @@ export class GameScene extends Phaser.Scene {
     this.#noticeText.setFontSize(40)
     this.#noticeText.setColor("#eedd00")
     this.#noticeText.setOrigin(0.5, 0.5)
+
+    eventsManager.on(EVENTS.POD_ESCAPED, () => {
+      this.peopleSaved += this.peopleInEscapePod
+      eventsManager.emit(EVENTS.UPDATE_SCORE, this.peopleSaved)
+    })
   }
 
   #started = false
@@ -65,10 +69,8 @@ export class GameScene extends Phaser.Scene {
     if (this.#started) return
     this.#started = true
 
-    //this.scene.start("UiScene")
-
     this.#noticeText.text = "PREPARE FOR DESTRUCTION"
-    this.#noticeText.alpha = 0    
+    this.#noticeText.alpha = 0
 
     const timeline = this.tweens.createTimeline({
       onComplete: () => this.#noticeText.text = ""
