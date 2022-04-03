@@ -40,9 +40,12 @@ export class GameOverScene extends Phaser.Scene {
 
   preload() {
     this.load.audio("gameovermusic", ["assets/music/gameover.mp3", "assets/music/gameover.ogg"]);
+    this.load.image("gameoverbackground", "assets/images/gameoverbackground.png");
   }
 
   create() {
+    this.add.image(640, 360, "gameoverbackground");
+
     const peopleSaved = this.podsEscaped * 100
 
     const headerText = "🎖 Game over 🎖"
