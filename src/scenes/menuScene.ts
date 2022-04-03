@@ -3,6 +3,7 @@ import { GameScene } from "./gameScene";
 export class MenuScene extends Phaser.Scene {
   StartGameEvent: string = "StartGameEvent";
   #music: any
+  padding = 50;
 
   constructor() {
     super({ active: false, visible: false });
@@ -13,11 +14,14 @@ export class MenuScene extends Phaser.Scene {
   preload() {
     console.log("Menu preload");
     this.scene.add("GameScene", GameScene, false);
-    this.load.audio("mainmenumusic", ["assets/music/mainmenu.mp3", "assets/music/mainmenu.ogg"])
+    this.load.audio("mainmenumusic", ["assets/music/mainmenu.mp3", "assets/music/mainmenu.ogg"]);
+    this.load.image("menubackground", "assets/images/menubackground.png");
   }
 
   create() {
     console.log("Menu create");
+
+    this.add.image(640, 360, "menubackground");
 
     this.createGameTitle();
     this.createStartButton();
@@ -38,19 +42,21 @@ export class MenuScene extends Phaser.Scene {
   createGameTitle() {
     const cameraWidth = this.cameras.default.width;
 
-    const text1 = this.add.text(0, 100, "Impending doom!", { font: "64px Arial" });
+    const text1 = this.add.text(this.padding, this.padding, "Impending doom!", { font: "64px Arial" });
     text1.setTint(0xff00ff, 0xffff00, 0x0000ff, 0xff0000);
-    text1.x = cameraWidth / 2 - text1.width / 2;
   }
 
   createStartButton() {
     const cameraWidth = this.cameras.default.width;
+    const cameraHeight = this.cameras.default.height;
 
+    const buttonWidth = 400;
+    const buttonHeight = 100;
     const buttonCoords = {
-      x: cameraWidth / 2 - 200,
-      y: 400,
-      width: 400,
-      height: 100,
+      x: cameraWidth - buttonWidth - this.padding,
+      y: cameraHeight - buttonHeight - this.padding,
+      width: buttonWidth,
+      height: buttonHeight,
     };
 
     const buttonZone = this.add
@@ -78,7 +84,7 @@ export class MenuScene extends Phaser.Scene {
       font: "64px Arial",
     });
     startText.setTint(0x00ffff, 0xffffff, 0x0000ff, 0xff00f0);
-    startText.x = cameraWidth / 2 - startText.width / 2;
+    startText.x = buttonCoords.x + (buttonCoords.width - startText.width) / 2;
     startText.y =
       buttonCoords.y + buttonCoords.height / 2 - startText.height / 2;
 
