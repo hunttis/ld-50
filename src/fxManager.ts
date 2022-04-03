@@ -71,9 +71,10 @@ export class FxManager {
         eventsManager.on(EVENTS.FLAMETRAIL, this.flameTrail, this)
         eventsManager.on(EVENTS.SMOKETRAIL, this.smokeTrail, this)
         eventsManager.on(EVENTS.SHIP_LAUNCH, this.shipLaunch, this)
+        eventsManager.on(EVENTS.METEOR_HITS_GROUND, this.meteorHitsGRound, this)
 
         this.#asteroidCreateSound = scene.game.sound.add("sfx_asteroid_create", {volume: 0.5})
-        this.#asteroidHitPlanetSound = scene.game.sound.add("sfx_asteroid_hit_planet", {volume: 0.5})
+        this.#asteroidHitPlanetSound = scene.game.sound.add("sfx_asteroid_hit_planet", {volume: 0.8})
         this.#asteroidHitShieldSounds = [
             scene.game.sound.add("sfx_asteroid_hit_shield_1", {volume: 0.8}),
             scene.game.sound.add("sfx_asteroid_hit_shield_2", {volume: 0.8}),
@@ -97,7 +98,7 @@ export class FxManager {
         this.#rocketLaunchSound.play()
     }
 
-    groundCollision(xLoc: number, yLoc: number) {
+    meteorHitsGRound(xLoc: number, yLoc: number) {
         this.#asteroidHitPlanetSound.play()
     }
 

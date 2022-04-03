@@ -98,24 +98,20 @@ export class UiScene extends Phaser.Scene {
     //   fontSize: "32px"
     // })
     const labelX = 10
-    const firstLabelY = 10
-    const labelStyle = { fontSize: "16px" }
+    const firstLabelY = 20
     const valueTextSize = 32
+    const rowHeight = valueTextSize + 3
     const valueX = 180
+    const labelStyle = { fontSize: "16px" }
+    const valueTextStyle = { fontSize: `${valueTextSize}px` }
 
     this.add.text(labelX, firstLabelY, "Pods escaped:", labelStyle)
-    this.add.text(labelX, firstLabelY + valueTextSize + 3, "Pods destroyed:", labelStyle)
-    this.add.text(labelX, firstLabelY + (valueTextSize + 3) * 2, "Meteors hit:", labelStyle)
+    this.add.text(labelX, firstLabelY + rowHeight, "Pods destroyed:", labelStyle)
+    this.add.text(labelX, firstLabelY + rowHeight * 2, "Meteors hit:", labelStyle)
 
-    this.podsSavedLabel = this.add.text(valueX, firstLabelY, '0', {
-      fontSize: "32px"
-    })
-    this.podsLostLabel = this.add.text(valueX, 150, '0', {
-      fontSize: "32px"
-    })
-    this.meteorHitsLabel = this.add.text(valueX, 200, '0', {
-      fontSize: "32px"
-    })
+    this.podsSavedLabel = this.add.text(valueX, firstLabelY, '0', valueTextStyle).setOrigin(0, .32)
+    this.podsLostLabel = this.add.text(valueX, firstLabelY + rowHeight, '0', valueTextStyle).setOrigin(0, .32)
+    this.meteorHitsLabel = this.add.text(valueX, firstLabelY + rowHeight * 2, '0', valueTextStyle).setOrigin(0, .32)
   }
 
   // updateCount(count: number) {

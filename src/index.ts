@@ -25,7 +25,7 @@ export function startGame() {
     parent: "game",
     backgroundColor: "#0f0f0f",
     // scene: [MenuScene]
-    scene: [GameScene, UiScene, GameOverScene, MenuScene]
+    scene: [MenuScene, GameScene, UiScene, GameOverScene]
   };
 
   return new Phaser.Game(config);

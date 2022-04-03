@@ -40,8 +40,6 @@ export class GameScene extends Phaser.Scene {
 
   constructor() {
     super({ key: "GameScene",  active: false, visible: false });
-    //Phaser.Scene.call(this, { key: "GameScene" });
-    //console.log("game", this.game);
   }
 
   preload() {

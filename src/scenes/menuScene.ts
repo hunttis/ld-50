@@ -6,9 +6,7 @@ export class MenuScene extends Phaser.Scene {
   padding = 50;
 
   constructor() {
-    super({ active: false, visible: false });
-    Phaser.Scene.call(this, { key: "MenuScene" });
-    console.log("menu", this.game);
+    super({ key: "MenuScene", active: false, visible: false });
   }
 
   preload() {

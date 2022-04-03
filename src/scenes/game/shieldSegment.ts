@@ -31,7 +31,7 @@ export class ShieldSegment extends Phaser.Physics.Matter.Sprite {
         } else {
           meteor = pair.bodyB.gameObject as Meteor;
         }
-        console.log(meteor.damage)
+        // console.log(meteor.damage)
         this.#energyLevel -= meteor!.damage
         if (this.#energyLevel === 0) {
           this.destroy()
