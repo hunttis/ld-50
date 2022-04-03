@@ -97,18 +97,23 @@ export class UiScene extends Phaser.Scene {
     // this.scoreLabel = this.add.text(10, 10, 'People saved: 0', {
     //   fontSize: "32px"
     // })
+    const labelX = 10
+    const firstLabelY = 10
+    const labelStyle = { fontSize: "16px" }
+    const valueTextSize = 32
+    const valueX = 180
 
-    this.add.text(10, 10, "Pods escaped:", { fontSize: "16px" })
-    this.add.text(10, 45, "Pods destroyed:", { fontSize: "16px" })
-    this.add.text(10, 80, "Meteors hit:", { fontSize: "16px" })
+    this.add.text(labelX, firstLabelY, "Pods escaped:", labelStyle)
+    this.add.text(labelX, firstLabelY + valueTextSize + 3, "Pods destroyed:", labelStyle)
+    this.add.text(labelX, firstLabelY + (valueTextSize + 3) * 2, "Meteors hit:", labelStyle)
 
-    this.podsSavedLabel = this.add.text(10, 100, '0', {
+    this.podsSavedLabel = this.add.text(valueX, firstLabelY, '0', {
       fontSize: "32px"
     })
-    this.podsLostLabel = this.add.text(10, 150, '0', {
+    this.podsLostLabel = this.add.text(valueX, 150, '0', {
       fontSize: "32px"
     })
-    this.meteorHitsLabel = this.add.text(10, 200, '0', {
+    this.meteorHitsLabel = this.add.text(valueX, 200, '0', {
       fontSize: "32px"
     })
   }

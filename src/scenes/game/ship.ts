@@ -59,6 +59,7 @@ export class Ship extends Phaser.Physics.Matter.Sprite{
         this.#text.setText("")
         this.#timerEvent = this.scene.time.addEvent({delay: FLYING_DELAY * 1000, callback: this.#warp})
         eventsManager.emit(EVENTS.PODS_LAUNCHED)
+        eventsManager.emit(EVENTS.SHIP_LAUNCH)
     }
 
     #warp = () => {

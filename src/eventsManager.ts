@@ -13,6 +13,7 @@ export const EVENTS = {
     TOGGLE_MUTE: 'toggle-mute',
     PAUSE_GAME: 'pause-game',
     SHIELD_STOPPED: 'shield-stopped',
+    SHIP_LAUNCH: 'ship-launch',
 }
 
 export enum STAT_CHANGE {
