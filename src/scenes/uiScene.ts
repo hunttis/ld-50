@@ -81,12 +81,14 @@ export class UiScene extends Phaser.Scene {
     const screenCenterY = this.cameras.main.height / 2;
 
     this.#pauseLabel = this.add.text(screenCenterX, screenCenterY, "GAME PAUSED", {
-      //backgroundColor: "#000",
+      backgroundColor: "rgba(0, 0, 0, .75)",
       fontSize: "128px",
+      padding: { x: 20, y: 10 },
       shadow: { offsetX: 10, offsetY: 10, color: "#0f0f0f", blur: 25 }
     })
+    .setStroke("#007777", 10)
     .setOrigin(.5, .5)
-    //.setShadow()
+    .setShadow(3, 3, "#222222", 2, true, true)
     .setVisible(false)
 
     var pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);

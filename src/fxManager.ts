@@ -2,9 +2,11 @@ import { EVENTS, eventsManager } from "./eventsManager";
 
 export class FxManager {
 
+    #starManager: Phaser.GameObjects.Particles.ParticleEmitterManager
     #explosionManager: Phaser.GameObjects.Particles.ParticleEmitterManager
     #smokeManager: Phaser.GameObjects.Particles.ParticleEmitterManager
 
+    #starEmitter: Phaser.GameObjects.Particles.ParticleEmitter
     #explosionEmitter: Phaser.GameObjects.Particles.ParticleEmitter
     #flameEmitter: Phaser.GameObjects.Particles.ParticleEmitter
     #smokeEmitter: Phaser.GameObjects.Particles.ParticleEmitter
@@ -17,6 +19,24 @@ export class FxManager {
     #shieldRotateSound!: Phaser.Sound.BaseSound
 
     constructor(scene: Phaser.Scene) {
+
+        this.#starManager = scene.add.particles('stars')
+        this.#starManager.setDepth(-1)
+        this.#starEmitter = this.#starManager.createEmitter({
+            scale: { start: 1.5, end: 0},
+            // angle: {min: 0, max: 360},
+            lifespan: { min: 5000, max: 10000},
+            alpha: {start: 0, end: 1},
+            // rotate: {min: 0, max: 100},
+            emitZone: {
+                source: new Phaser.Geom.Rectangle(0, 0, 1280, 720),
+                type: 'random',
+                quantity: 1
+            },
+            // frequency: 1,
+            
+        })
+                
 
         this.#explosionManager = scene.add.particles('flame')
         

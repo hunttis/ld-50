@@ -65,6 +65,11 @@ export class GameScene extends Phaser.Scene {
       frameWidth: 16,
       frameHeight: 16
     })
+
+    this.load.spritesheet("stars", "assets/images/star.png", {
+      frameWidth: 16,
+      frameHeight: 16
+    })
     this.load.image("rocket", "assets/images/rocket.png");
     this.load.image("flame", "assets/images/flame.png");
 
