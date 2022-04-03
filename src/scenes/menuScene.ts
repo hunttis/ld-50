@@ -44,7 +44,7 @@ export class MenuScene extends Phaser.Scene {
   createGameTitle() {
     const screenCenterX = this.cameras.default.width / 2;
 
-    this.add.text(screenCenterX, 100, "THERE WILL BE CAKE", {
+    this.add.text(screenCenterX, 100, "AND THEN THERE WERE NONE", {
       // backgroundColor: "rgba(0, 0, 0, .5)",
       fontFamily: EIGHTBIT_WONDER,
       fontSize: "64px",
@@ -56,23 +56,20 @@ export class MenuScene extends Phaser.Scene {
   }
 
   createControlInstructions() {
-    const textX = this.cameras.default.width * .70;
+    const textX = this.cameras.default.width * .75;
+    const textStartY = 350
     const instructionsTextSize = 20
+    const rowHeight = instructionsTextSize + 25
+    const textStyle = { fontFamily: EIGHTBIT_WONDER, fontSize: `${instructionsTextSize}px` }
 
-    this.add.text(textX, 400, "Controls:", {
-      fontFamily: EIGHTBIT_WONDER,
-      fontSize: `${instructionsTextSize * 1.2}px`,
+    this.add.text(textX + 50, textStartY, "Controls", {
+      fontSize: `${instructionsTextSize * 1.2}px`
     }).setOrigin(0, .5)
 
-    this.add.text(textX, 450, "Rotate shields:\narrow keys", {
-      fontFamily: EIGHTBIT_WONDER,
-      fontSize: `${instructionsTextSize}px`
-    }).setOrigin(0, .5)
-
-    this.add.text(textX, 510, "Launch escape pods:\nup arrow", {
-      fontFamily: EIGHTBIT_WONDER,
-      fontSize: `${instructionsTextSize}px`
-    }).setOrigin(0, .5)
+    this.add.text(textX - 50, textStartY + rowHeight, "Rotate shields: ⬅ / ⮕", textStyle).setOrigin(0, .5)
+    this.add.text(textX - 50, textStartY + rowHeight * 2, "Launch escape pods: ⬆", textStyle).setOrigin(0, .5)
+    this.add.text(textX - 50, textStartY + rowHeight * 3, "Pause game: P", textStyle).setOrigin(0, .5)
+    this.add.text(textX - 50, textStartY + rowHeight * 4, "Music/sounds: M", textStyle).setOrigin(0, .5)
   }
 
   createStartInstructions() {
