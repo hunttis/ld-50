@@ -1,9 +1,22 @@
 export const EVENTS = {
-    POD_ESCAPED: 'event-pod-escaped',
-    UPDATE_SCORE: 'event-update-score',
+    PODS_LAUNCHED: 'pods-launched',
+    POD_ESCAPED: 'pod-escaped',
+    POD_DESTROYED: 'pod-destroyed',
+    UPDATE_SCORE: 'update-score',
+    UPDATE_STATS: 'update-stats',
     EXPLOSION: 'explosion',
-    METEOR_HITS: 'meteor-hits',
-    SHIELD_TURNING: 'shield-turning'
+    METEOR_HITS_GROUND: 'meteor-hits-ground',
+    SHIELD_TURNING: 'shield-turning',
+    FLAMETRAIL: 'flametrail',
+    TUTORIAL_ADVANCE: 'tutorial-advance',
+    SMOKETRAIL: 'smoketrail',
+    TOGGLE_MUTE: 'toggle-mute',
+}
+
+export enum STAT_CHANGE {
+    PodEscaped,
+    PodDestroyed,
+    MeteorHitGround
 }
 
 export const eventsManager = new Phaser.Events.EventEmitter()

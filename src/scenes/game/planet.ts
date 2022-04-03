@@ -1,6 +1,7 @@
 import { CollisionGroup } from "./collisions";
 import { PlanetLocation } from "./planetLocation";
 import { Shield } from "./shield";
+import { EVENTS, eventsManager } from "../../eventsManager";
 
 const ROCKET_BUILD_TIME = 5
 
@@ -35,20 +36,33 @@ export class Planet {
         this.#countdownText.setFontFamily("sans-serif")
         this.#countdownText.setFontSize(28)
         this.#countdownText.setOrigin(0.5, 0.5)
+
+        eventsManager.on(EVENTS.PODS_LAUNCHED, () => { this.startBuildTimer() })
     }
 
     start() {
+        this.startBuildTimer()
+    }
+    
+    startBuildTimer() {
+        if (this.#timer && !this.#timer?.hasDispatched) return
+
         this.#timer = this.scene.time.addEvent({delay: ROCKET_BUILD_TIME * 1000, callback: this.#buildRocket})
     }
 
     #buildRocket = () => {
         const validLocations = this.#activeLocations.filter(loc => loc.isValid)
         const loc = validLocations[Phaser.Math.Between(0, validLocations.length - 1)]
+
+        this.#timer?.destroy()
+
         if (!loc) return
         loc.createShip()
 
-        this.#timer?.destroy()
-        this.#timer = this.scene.time.addEvent({delay: 5000, callback: this.#buildRocket})
+        // only start build timer if there's still place to build another ship
+        if (validLocations.length > 1) {
+            this.startBuildTimer()
+        }
     }
 
     onMeteorCollision = (location: PlanetLocation) => {
@@ -60,9 +74,11 @@ export class Planet {
     }
 
     update(d: number) {
-        if (this.#timer) {
+        if (this.#timer && !this.#timer?.hasDispatched) {
             const remaining = Math.round(ROCKET_BUILD_TIME - this.#timer.getElapsedSeconds())
             this.#countdownText.text = `${remaining}`
+        } else {
+            this.#countdownText.text = ''
         }
         this.#locations.forEach(loc => loc.update(d))
     }

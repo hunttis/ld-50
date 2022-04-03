@@ -1,6 +1,7 @@
 import { CollisionGroup } from "./collisions";
 import { Planet } from "./planet";
 import { EVENTS, eventsManager } from "../../eventsManager";
+import { TutorialStep } from "../uiScene";
 
 enum ShipState {
     Launching,
@@ -29,14 +30,19 @@ export class Ship extends Phaser.Physics.Matter.Sprite{
         this.setIgnoreGravity(true)
         this.setCollisionCategory(CollisionGroup.Ship)
         this.setCollidesWith(CollisionGroup.Meteor | CollisionGroup.Shield)
-        this.setOnCollide(() => {
-            eventsManager.emit(EVENTS.EXPLOSION, this.x, this.y)
-            this.#destroyed = true
-            this.destroy()
-        })
 
         this.setAngle(Phaser.Math.RadToDeg(angle));
         this.scene.add.existing(this)
+
+        this.setOnCollide(() => {
+            this.#destroyed = true
+            if (this.body){
+                eventsManager.emit(EVENTS.TUTORIAL_ADVANCE, TutorialStep.SHIP_DESTROYED)
+                eventsManager.emit(EVENTS.EXPLOSION, this.x, this.y)
+                eventsManager.emit(EVENTS.POD_DESTROYED)
+            }
+            this.destroy()
+        })
 
         // this.#timerEvent = this.scene.time.addEvent({delay: LAUNCH_DELAY * 1000, callback: this.launch})
 
@@ -52,10 +58,12 @@ export class Ship extends Phaser.Physics.Matter.Sprite{
         this.#state = ShipState.Flying;
         this.#text.setText("")
         this.#timerEvent = this.scene.time.addEvent({delay: FLYING_DELAY * 1000, callback: this.#warp})
+        eventsManager.emit(EVENTS.PODS_LAUNCHED)
     }
 
     #warp = () => {
-        if (!this.visible && !this.#destroyed && !this.#saved) {
+        if (!this.#saved && !this.#destroyed) {
+            eventsManager.emit(EVENTS.TUTORIAL_ADVANCE, TutorialStep.SHIP_SAVED)
             eventsManager.emit(EVENTS.POD_ESCAPED)
             this.#saved = true
         }
@@ -74,12 +82,22 @@ export class Ship extends Phaser.Physics.Matter.Sprite{
         // }
         if (this.#state === ShipState.Flying) {
             this.thrust(0.0002)
+            eventsManager.emit(EVENTS.SMOKETRAIL, this.x, this.y, this.angle)
         }
+    }
+
+    get isDestroyed() {
+        return this.#destroyed
+    }
+
+    get isGrounded() {
+        return this.#state === ShipState.Launching
     }
 
     destroy() {
         super.destroy()
         this.#timerEvent?.destroy()
         this.#text.destroy()
+        this.#destroyed = true
     }
 }

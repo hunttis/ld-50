@@ -1,3 +1,5 @@
+import { eventsManager, EVENTS } from "../../eventsManager"
+import { TutorialStep } from "../uiScene"
 import { CollisionGroup } from "./collisions"
 import { Ship } from "./ship"
 
@@ -37,18 +39,20 @@ export class PlanetLocation {
     }
 
     createShip() {
-        if (this.#ship) return
+        if (this.#ship && !this.#ship.isDestroyed) return
 
         this.#ship = new Ship(this.scene, this.#x, this.#y, this.#angle)
+        eventsManager.emit(EVENTS.TUTORIAL_ADVANCE, TutorialStep.SHIP_CREATED)
     }
 
     get isValid() {
-        return !this.#ship
+        return !this.#ship || this.#ship.isDestroyed
     }
 
     get isOnFire() {
         return this.#onFire
     }
+
 
     update(d:number) {
         if (this.#onFire && !this.#fireEmitter) {
@@ -93,11 +97,12 @@ export class PlanetLocation {
     onCollide = (
       pair: unknown
     ) => {
+        eventsManager.emit(EVENTS.METEOR_HITS_GROUND)
         if (!this.#onFire) {
             this.#onMeteorCollision(this)
         } 
         this.#onFire = true
-        if (this.#ship) {
+        if (this.#ship && this.#ship.isGrounded) {
             this.#ship.destroy()
         }
     }
