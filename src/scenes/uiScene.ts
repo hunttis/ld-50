@@ -76,7 +76,7 @@ export class UiScene extends Phaser.Scene {
     this.#pauseLabel = this.add.text(screenCenterX, screenCenterY, "GAME PAUSED", {
       backgroundColor: "rgba(0, 0, 0, .85)",
       fontFamily: EIGHTBIT_WONDER,
-      fontSize: "128px",
+      fontSize: "92px",
       padding: { x: 20, y: 10 },
     })
     .setOrigin(.5, .5)
