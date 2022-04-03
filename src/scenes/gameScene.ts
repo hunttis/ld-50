@@ -37,7 +37,7 @@ export class GameScene extends Phaser.Scene {
   preload() {
     console.log("Game preload");
 
-    this.load.audio("gameplaymusic", ["assets/music/gameplay.mp3"])
+    this.load.audio("gameplaymusic", ["assets/music/gameplay.mp3", "assets/music/gameplay.ogg"]);
 
     this.load.image("planet", "assets/images/planet.png");
     this.load.image("meteor", "assets/images/meteor.png");
@@ -78,7 +78,7 @@ export class GameScene extends Phaser.Scene {
       loop: true,
       volume: 0.5
     })
-    music.play();
+    //music.play();
   }
 
   #started = false
