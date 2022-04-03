@@ -71,6 +71,8 @@ export class Shield extends Phaser.GameObjects.Group {
             segments.forEach(segment => {
                 segment.setAngle(Phaser.Math.RadToDeg(Phaser.Math.Angle.BetweenPoints({x: this.#xLoc,y: this.#yLoc}, segment.getCenter())))
             })
+        } else {
+            eventsManager.emit(EVENTS.SHIELD_STOPPED)
         }
     }
 }

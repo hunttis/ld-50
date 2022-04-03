@@ -9,6 +9,13 @@ export class FxManager {
     #flameEmitter: Phaser.GameObjects.Particles.ParticleEmitter
     #smokeEmitter: Phaser.GameObjects.Particles.ParticleEmitter
 
+    #asteroidCreateSound!: Phaser.Sound.BaseSound
+    #asteroidHitPlanetSound!: Phaser.Sound.BaseSound
+    #asteroidHitShieldSound!: Phaser.Sound.BaseSound
+    #rocketHitShieldSound!: Phaser.Sound.BaseSound
+    #rocketLaunchSound!: Phaser.Sound.BaseSound
+    #shieldRotateSound!: Phaser.Sound.BaseSound
+
     constructor(scene: Phaser.Scene) {
 
         this.#explosionManager = scene.add.particles('flame')
@@ -42,21 +49,38 @@ export class FxManager {
 
         eventsManager.on(EVENTS.EXPLOSION, this.explosion, this)
         eventsManager.on(EVENTS.SHIELD_TURNING, this.shieldTurning, this)
+        eventsManager.on(EVENTS.SHIELD_STOPPED, this.shieldStopped, this)
         eventsManager.on(EVENTS.FLAMETRAIL, this.flameTrail, this)
         eventsManager.on(EVENTS.SMOKETRAIL, this.smokeTrail, this)
+
+        this.#asteroidCreateSound = scene.game.sound.add("sfx_asteroid_create", {volume: 1})
+        this.#asteroidHitPlanetSound = scene.game.sound.add("sfx_asteroid_hit_planet", {volume: 1})
+        this.#asteroidHitShieldSound = scene.game.sound.add("sfx_asteroid_hit_shield", {volume: 1})
+        this.#rocketHitShieldSound = scene.game.sound.add("sfx_rocket_hit_shield", {volume: 1})
+        this.#rocketLaunchSound = scene.game.sound.add("sfx_rocket_launch", {volume: 1})
+        this.#shieldRotateSound = scene.game.sound.add("sfx_shield_rotate", {volume: 1})
+    
     }
 
     explosion(xLoc: number , yLoc: number) {
-        // TODO Räjähdysääni
         this.#explosionEmitter.explode(20, xLoc, yLoc)
+        this.#asteroidHitShieldSound.play()
     }
 
     groundCollision(xLoc: number, yLoc: number) {
-        // TODO Räjähdysääni
+        this.#asteroidHitPlanetSound.play()
     }
 
     shieldTurning() {
-        // TODO Tarkista soiko ääni ja soita ääntä
+        if (!this.#shieldRotateSound.isPlaying) {
+            this.#shieldRotateSound.play()
+        }
+    }
+
+    shieldStopped() {
+        if (this.#shieldRotateSound.isPlaying) {
+            this.#shieldRotateSound.stop()
+        }
     }
 
     flameTrail(xLoc: number, yLoc: number) {
@@ -66,5 +90,6 @@ export class FxManager {
 
     smokeTrail(xLoc: number, yLoc: number, angle: number) {
         this.#smokeEmitter.explode(2, xLoc, yLoc)
+
     }
 }

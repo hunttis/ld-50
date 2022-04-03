@@ -11,6 +11,8 @@ export const EVENTS = {
     TUTORIAL_ADVANCE: 'tutorial-advance',
     SMOKETRAIL: 'smoketrail',
     TOGGLE_MUTE: 'toggle-mute',
+    PAUSE_GAME: 'pause-game',
+    SHIELD_STOPPED: 'shield-stopped',
 }
 
 export enum STAT_CHANGE {

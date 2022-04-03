@@ -22,7 +22,7 @@ export class UiScene extends Phaser.Scene {
   #tutorialLabel!: Phaser.GameObjects.Text;
   #tutorialCooldownMax: number = 2
   #tutorialCooldown: number = this.#tutorialCooldownMax
-
+  
   tutorialTexts: string[] = [
     "Whew, what a peaceful morning...",
     "Oh no, what is that?!",
@@ -34,6 +34,8 @@ export class UiScene extends Phaser.Scene {
     ""
   ]
 
+  #pauseLabel!: Phaser.GameObjects.Text;
+  
   constructor() {
     super({ key: "UiScene", active: true });
   }
@@ -67,6 +69,24 @@ export class UiScene extends Phaser.Scene {
       {fontSize: "32px"}
     )
     this.#tutorialLabel.x -= this.#tutorialLabel.width / 2
+
+    const screenCenterX = this.cameras.main.width / 2;
+    const screenCenterY = this.cameras.main.height / 2;
+
+    this.#pauseLabel = this.add.text(screenCenterX, screenCenterY, "GAME PAUSED", {
+      //backgroundColor: "#000",
+      fontSize: "128px",
+      shadow: { offsetX: 10, offsetY: 10, color: "#0f0f0f", blur: 25 }
+    })
+    .setOrigin(.5, .5)
+    //.setShadow()
+    .setVisible(false)
+
+    var pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+    pauseKey.on('down', () => {
+      eventsManager.emit(EVENTS.PAUSE_GAME)
+      this.#pauseLabel.setVisible(!this.#pauseLabel.visible)
+    });
 
     eventsManager.on(EVENTS.TUTORIAL_ADVANCE, this.advanceTutorial, this)
     eventsManager.on(EVENTS.UPDATE_SCORE, this.updateCount, this)

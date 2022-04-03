@@ -39,8 +39,8 @@ export class GameScene extends Phaser.Scene {
 
   constructor() {
     super({ key: "GameScene",  active: false, visible: false });
-    Phaser.Scene.call(this, { key: "GameScene" });
-    console.log("game", this.game);
+    //Phaser.Scene.call(this, { key: "GameScene" });
+    //console.log("game", this.game);
   }
 
   preload() {
@@ -71,7 +71,12 @@ export class GameScene extends Phaser.Scene {
     this.load.image("box", "assets/images/box.png");
     this.load.image("box2", "assets/images/box2.png");
 
-    // this.load.audio("")
+    this.load.audio("sfx_asteroid_create", ["assets/sfx/asteroid_create.mp3", "assets/sfx/asteroid_create.ogg"])
+    this.load.audio("sfx_asteroid_hit_planet", ["assets/sfx/asteroid_hit_planet.mp3", "assets/sfx/asteroid_hit_planet.ogg"])
+    this.load.audio("sfx_asteroid_hit_shield", ["assets/sfx/asteroid_hit_shield.mp3", "assets/sfx/asteroid_hit_shield.ogg"])
+    this.load.audio("sfx_rocket_hit_shield", ["assets/sfx/rocket_hit_shield.mp3", "assets/sfx/rocket_hit_shield.ogg"])
+    this.load.audio("sfx_rocket_launch", ["assets/sfx/rocket_launch.mp3", "assets/sfx/rocket_launch.ogg"])
+    this.load.audio("sfx_shield_rotate", ["assets/sfx/shield_rotate.mp3", "assets/sfx/shield_rotate.ogg"])
 
   }
 
@@ -104,6 +109,14 @@ export class GameScene extends Phaser.Scene {
       this.#meteorHits++;
       eventsManager.emit(EVENTS.UPDATE_STATS, STAT_CHANGE.MeteorHitGround, this.#meteorHits)
     })
+    eventsManager.on(EVENTS.PAUSE_GAME, () => {
+      if (this.scene.isPaused()) {
+        this.scene.resume();
+      } else {
+        this.scene.pause();
+      }
+    })
+
 
     this.#fxManager = new FxManager(this)
     var music = this.game.sound.add("gameplaymusic", {
@@ -116,7 +129,6 @@ export class GameScene extends Phaser.Scene {
     quitKey.on('down', () => {
       this.goToGameOver()
     });
-
 
     var muteKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
     muteKey.on('down', () => {
@@ -220,6 +232,7 @@ export class GameScene extends Phaser.Scene {
     if (this.planet.isCompletelyOnFire || this.shield.isCompletelyGone) {
       this.goToGameOver()
     }
+    
 
   }
 

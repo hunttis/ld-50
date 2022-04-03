@@ -19,12 +19,12 @@ export class GameOverScene extends Phaser.Scene {
     ...this.commonFontStyle,
     fontSize: "32px"
   }
-  /*
+  
   statisticsStyle = {
     ...this.commonFontStyle,
     fontSize: "20px"
   }
-  */
+  
 
   podsEscaped: number
 
@@ -42,19 +42,23 @@ export class GameOverScene extends Phaser.Scene {
 
     const headerText = "🎖 Game over 🎖"
 
-    const descriptionText =
-      "The planet was destroyed.\n\n"
+    let descriptionText =
+      "The planet was destroyed."
+      
+    if (peopleSaved > 0) {
+      descriptionText +=
+      "\n\n"
       + "But thanks to your valiant efforts defending it and\n"
       + "your courageous self-sacrifice, some of the planet's\n"
       + "richest inhabitants with escape pods managed to escape."
+    }
+    
 
     const scoreText = (peopleSaved ? peopleSaved : "No") + " people escaped."
 
-    /*
     const statisticText = "(That's "
-      + (peopleSaved / 7_000_000_000)
+      + (peopleSaved / 7_000_000_000).toFixed(10)
       + "% of the planet's population.)"
-*/
 
     const screenCenterX = this.cameras.main.width / 2;
     const screenCenterY = this.cameras.main.height / 2;
@@ -81,13 +85,13 @@ export class GameOverScene extends Phaser.Scene {
       this.scoreStyle
     ).setOrigin(.5, 0);
 
-    /*
+    
     this.add.text(
       screenCenterX,
       screenCenterY * 1.5,
       statisticText,
       this.statisticsStyle
     ).setOrigin(.5, 0);
-    */
+    
   }
 }
