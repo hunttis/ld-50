@@ -39,7 +39,7 @@ export class UiScene extends Phaser.Scene {
   #pauseLabel!: Phaser.GameObjects.Text;
   
   constructor() {
-    super({ key: "UiScene", active: true });
+    super({ key: "UiScene", active: false });
   }
 
   preload() {

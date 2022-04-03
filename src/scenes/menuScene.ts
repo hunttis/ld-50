@@ -106,6 +106,7 @@ export class MenuScene extends Phaser.Scene {
 
   startGameScene() {
     this.#music.stop();
+    this.scene.start("UiScene");
     this.scene.start("GameScene");
   }
 }
