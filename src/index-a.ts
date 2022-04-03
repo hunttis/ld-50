@@ -1,33 +1,44 @@
-export function startGame() {
-  const config: Phaser.Types.Core.GameConfig = {
-    title: "Phaser game",
-    scale: {
-      mode: Phaser.Scale.FIT,
-      autoCenter: Phaser.Scale.CENTER_BOTH,
-      width: 800,
-      height: 600,
-    },
-    physics: {
-      default: "arcade",
-      arcade: {
-        debug: true,
-      },
-    },
-    parent: "game",
-    backgroundColor: "#0f0f0f",
-    scene: new SceneA(),
-  };
+class SceneA extends Phaser.Scene {
+  constructor() {
+    super("scene-a");
+  }
 
-  return new Phaser.Game(config);
+  preload() {
+    //        this.load.spritesheet('mummy', 'assets/animations/mummy37x45.png', { frameWidth: 37, frameHeight: 45 });
+    this.load.spritesheet("mummy", "assets/images/meteorAnim.png", {
+      frameWidth: 32,
+      frameHeight: 32,
+    })
+  }
+
+  create() {
+    console.log('AnimMan:', this.anims)
+    const mummyAnimation: Phaser.Animations.Animation = this.anims.create({
+      key: 'walk',
+      frames: 'mummy',
+      //frames: this.anims.generateFrameNumbers('mummy', { start: 0, end: 1 }),
+      frameRate: 24,
+      repeat: -1
+    }) as Phaser.Animations.Animation;
+    console.log('Anim:', mummyAnimation)
+
+    const sprite = this.add.sprite(300, 200, 'mummy').setScale(4);
+
+    console.log('walk:', this.anims.get("walk"))
+    //sprite.play({ key: 'walk', repeat: -1 });
+    sprite.play(mummyAnimation);
+  }
 }
 
-export class SceneA extends Phaser.Scene {
-  constructor() {
-    super({ active: false, visible: false });
-    console.log("game", this.game);
-  }
+const config = {
+  type: Phaser.AUTO,
+  parent: 'game',
+  width: 800,
+  height: 600,
+  pixelArt: true,
+  scene: [SceneA]
+};
 
-  update() {
-    this.cameras.main.setBackgroundColor("#0000FF");
-  }
+export function startGame() {
+  return new Phaser.Game(config);
 }

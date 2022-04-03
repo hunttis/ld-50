@@ -1,10 +1,16 @@
 import { CollisionGroup } from "./collisions";
 import { EVENTS, eventsManager } from "../../eventsManager";
 
+
 export class Meteor extends Phaser.Physics.Matter.Sprite {
 
-    constructor(readonly scene: Phaser.Scene, xLoc: number, yLoc: number) {
-        super(scene.matter.world, xLoc, yLoc, "meteor")
+    #emitterManager!: Phaser.GameObjects.Particles.ParticleEmitterManager
+    #emitter!: Phaser.GameObjects.Particles.ParticleEmitter
+    #damage: number = 1
+
+    constructor(readonly scene: Phaser.Scene, xLoc: number, yLoc: number, damage: number = 1) {
+        super(scene.matter.world, xLoc, yLoc, "animatedmeteor")
+
         this.setCircle(8)
         this.setIgnoreGravity(true)
         this.setMass(1)
@@ -25,8 +31,17 @@ export class Meteor extends Phaser.Physics.Matter.Sprite {
             this.destroy()
         })
 
+        this.#damage = damage
+
         this.name = "Meteor"
         scene.add.existing(this)
+        if (this.#damage === 3) {
+            this.tint = 0xff0000
+        }
+    }
+
+    get damage() {
+        return this.#damage
     }
 
     update(planetLoc: Phaser.Math.Vector2, time: number, delta: number) {
@@ -36,5 +51,11 @@ export class Meteor extends Phaser.Physics.Matter.Sprite {
         this.angle = Phaser.Math.RadToDeg(angleToPlanet)
         // TODO: increase thrust value over time + randomize a bit
         this.thrust(.005 * delta)
+        // this.play("meteorspin")
+        
+        if (this.#damage === 3) {
+            eventsManager.emit(EVENTS.FLAMETRAIL, this.x, this.y)
+        }
+
     }
 }
