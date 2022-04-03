@@ -7,6 +7,7 @@ import { EVENTS, STAT_CHANGE, eventsManager } from "../eventsManager";
 import { FxManager } from "../fxManager";
 import { GameOverScene } from "./gameOverScene"
 import { TutorialStep, UiScene } from "./uiScene";
+import { EIGHTBIT_WONDER } from "../fonts";
 
 export class GameScene extends Phaser.Scene {
   cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -99,7 +100,7 @@ export class GameScene extends Phaser.Scene {
     this.meteors = new Phaser.GameObjects.Group(this)
     this.meteors.maxSize = this.meteorMaximum
     this.#noticeText = this.add.text(this.cameras.main.width / 2, 100, "")
-    this.#noticeText.setFontFamily("sans-serif")
+    this.#noticeText.setFontFamily(EIGHTBIT_WONDER)
     this.#noticeText.setFontSize(40)
     this.#noticeText.setColor("#eedd00")
     this.#noticeText.setOrigin(0.5, 0.5)

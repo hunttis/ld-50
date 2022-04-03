@@ -1,4 +1,5 @@
 import { GameScene } from "./gameScene";
+import { EIGHTBIT_WONDER } from "../fonts";
 
 export class MenuScene extends Phaser.Scene {
   StartGameEvent: string = "StartGameEvent";
@@ -41,7 +42,15 @@ export class MenuScene extends Phaser.Scene {
   createGameTitle() {
     const cameraWidth = this.cameras.default.width;
 
-    const text1 = this.add.text(this.padding, this.padding, "Impending doom!", { font: "64px Arial" });
+    const text1 = this.add.text(
+      this.padding,
+      this.padding,
+      "Impending doom!",
+      {
+        fontFamily: EIGHTBIT_WONDER,
+        fontSize: "64px",
+      }
+    );
     text1.setTint(0xff00ff, 0xffff00, 0x0000ff, 0xff0000);
   }
 
@@ -80,7 +89,7 @@ export class MenuScene extends Phaser.Scene {
     );
 
     const startText = this.add.text(0, buttonCoords.y, "Start", {
-      font: "64px Arial",
+      font: "64px \"8BIT WONDER\"",
     });
     startText.setTint(0x00ffff, 0xffffff, 0x0000ff, 0xff00f0);
     startText.x = buttonCoords.x + (buttonCoords.width - startText.width) / 2;

@@ -1,10 +1,12 @@
+import { EIGHTBIT_WONDER } from "../fonts";
+
 interface GameData {
     podsEscaped: number
 }
 
 export class GameOverScene extends Phaser.Scene {
   commonFontStyle = {
-    //fontFamily: "Monospace",
+    fontFamily: EIGHTBIT_WONDER,
     fontSize: "24px",
     //fill: "#77dd77",
     fill: "#ddeedd",

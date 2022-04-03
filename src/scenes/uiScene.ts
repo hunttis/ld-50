@@ -1,4 +1,5 @@
 import { EVENTS, STAT_CHANGE, eventsManager } from "../eventsManager";
+import { EIGHTBIT_WONDER } from "../fonts";
 
 export enum TutorialStep {
   FIRST_METEOR,
@@ -53,7 +54,8 @@ export class UiScene extends Phaser.Scene {
     this.createStatsBox()
 
     this.systemLabel = this.add.text(1280, 700, 'System', {
-      fontSize: "16px"
+      fontFamily: EIGHTBIT_WONDER,
+      fontSize: "16px",
     })
     this.systemLabel.x -= this.systemLabel.width + 10
 
@@ -61,7 +63,10 @@ export class UiScene extends Phaser.Scene {
       this.cameras.main.width / 2,
       600,
       this.tutorialTexts[this.#tutorialStep],
-      {fontSize: "32px"}
+      {
+        fontFamily: EIGHTBIT_WONDER,
+        fontSize: "24px",
+      }
     )
     this.#tutorialLabel.x -= this.#tutorialLabel.width / 2
 
@@ -70,6 +75,7 @@ export class UiScene extends Phaser.Scene {
 
     this.#pauseLabel = this.add.text(screenCenterX, screenCenterY, "GAME PAUSED", {
       backgroundColor: "rgba(0, 0, 0, .85)",
+      fontFamily: EIGHTBIT_WONDER,
       fontSize: "128px",
       padding: { x: 20, y: 10 },
       shadow: { offsetX: 10, offsetY: 10, color: "#0f0f0f", blur: 25 }
@@ -95,6 +101,7 @@ export class UiScene extends Phaser.Scene {
 
   createStatsBox() {
     // this.scoreLabel = this.add.text(10, 10, 'People saved: 0', {
+    //   fontFamily: EIGHTBIT_WONDER,
     //   fontSize: "32px"
     // })
     const labelX = 10
@@ -102,7 +109,7 @@ export class UiScene extends Phaser.Scene {
     const valueTextSize = 32
     const rowHeight = valueTextSize + 3
     const valueX = 180
-    const labelStyle = { fontSize: "16px" }
+    const labelStyle = { fontFamily: EIGHTBIT_WONDER, fontSize: "16px" }
     const valueTextStyle = { fontSize: `${valueTextSize}px` }
 
     this.add.text(labelX, firstLabelY, "Pods escaped:", labelStyle)

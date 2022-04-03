@@ -2,6 +2,7 @@ import { CollisionGroup } from "./collisions";
 import { PlanetLocation } from "./planetLocation";
 import { Shield } from "./shield";
 import { EVENTS, eventsManager } from "../../eventsManager";
+import { EIGHTBIT_WONDER } from "../../fonts";
 
 const ROCKET_BUILD_TIME = 5
 
@@ -33,7 +34,7 @@ export class Planet {
         this.#activeLocations = this.#locations.slice()
 
         this.#countdownText = scene.add.text(xLoc, yLoc, "")
-        this.#countdownText.setFontFamily("sans-serif")
+        this.#countdownText.setFontFamily(EIGHTBIT_WONDER)
         this.#countdownText.setFontSize(28)
         this.#countdownText.setOrigin(0.5, 0.5)
 

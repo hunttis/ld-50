@@ -4,6 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="preload" as="font" href="assets/fonts/8BIT%20WONDER.ttf" type="font/ttf" />
+    <style type="text/css">
+      @font-face {
+          font-family: "8BIT WONDER";
+          font-weight: 400;
+          font-weight: normal;
+          src: url('assets/fonts/8BIT%20WONDER.ttf');
+      }
+    </style>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
     <script defer type="module">
       import "./src/refreshServer.ts";
@@ -13,5 +22,6 @@
   </head>
   <body>
     <div class="game"></div>
+    <div style="font-family: '8BIT WONDER'; visibility: hidden">.</div>
   </body>
 </html>
