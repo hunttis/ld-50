@@ -160,7 +160,7 @@ export class GameScene extends Phaser.Scene {
     if (this.#started) return
     this.#started = true
 
-    this.#noticeText.text = "PREPARE FOR DESTRUCTION"
+    this.#noticeText.text = "PREPARE FOR\nDESTRUCTION"
     this.#noticeText.alpha = 0
 
     eventsManager.emit(EVENTS.TUTORIAL_ADVANCE, TutorialStep.PREPARE_FOR_DESTRUCTION)

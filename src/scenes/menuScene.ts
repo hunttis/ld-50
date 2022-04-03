@@ -24,14 +24,16 @@ export class MenuScene extends Phaser.Scene {
     this.add.image(640, 360, "menubackground");
 
     this.createGameTitle();
-    this.createStartButton();
+    this.createControlInstructions();
+    this.createStartInstructions();
 
     this.events.on(this.StartGameEvent, this.startGameScene, this);
 
-    this.input.keyboard.on("keydown", (event: KeyboardEvent) => {
-      console.log("key", event.key);
+    var mainMenuKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    mainMenuKey.on('down', () => {
       this.events.emit(this.StartGameEvent);
     });
+
     this.#music = this.game.sound.add("mainmenumusic", {
       loop: true,
       volume: 0.5
@@ -40,73 +42,54 @@ export class MenuScene extends Phaser.Scene {
   }
 
   createGameTitle() {
-    const cameraWidth = this.cameras.default.width;
+    const screenCenterX = this.cameras.default.width / 2;
 
-    const text1 = this.add.text(
-      this.padding,
-      this.padding,
-      "Impending doom!",
-      {
-        fontFamily: EIGHTBIT_WONDER,
-        fontSize: "64px",
-      }
-    );
-    text1.setTint(0xff00ff, 0xffff00, 0x0000ff, 0xff0000);
+    this.add.text(screenCenterX, 100, "THERE WILL BE CAKE", {
+      // backgroundColor: "rgba(0, 0, 0, .5)",
+      fontFamily: EIGHTBIT_WONDER,
+      fontSize: "64px",
+      // padding: { x: 30, y: 10 },
+    })
+    .setOrigin(.5, .5)
+    .setStroke("#077", 10)
+    .setShadow(3, 3, "#000", 5, true, true)
   }
 
-  createStartButton() {
-    const cameraWidth = this.cameras.default.width;
-    const cameraHeight = this.cameras.default.height;
+  createControlInstructions() {
+    const textX = this.cameras.default.width * .70;
+    const instructionsTextSize = 20
 
-    const buttonWidth = 400;
-    const buttonHeight = 100;
-    const buttonCoords = {
-      x: cameraWidth - buttonWidth - this.padding,
-      y: cameraHeight - buttonHeight - this.padding,
-      width: buttonWidth,
-      height: buttonHeight,
-    };
+    this.add.text(textX, 400, "Controls:", {
+      fontFamily: EIGHTBIT_WONDER,
+      fontSize: `${instructionsTextSize * 1.2}px`,
+    }).setOrigin(0, .5)
 
-    const buttonZone = this.add
-      .zone(
-        buttonCoords.x,
-        buttonCoords.y,
-        buttonCoords.width,
-        buttonCoords.height
-      )
-      .setOrigin(0)
-      .setName("StartGameButton")
-      .setInteractive();
+    this.add.text(textX, 450, "Rotate shields:\narrow keys", {
+      fontFamily: EIGHTBIT_WONDER,
+      fontSize: `${instructionsTextSize}px`
+    }).setOrigin(0, .5)
 
-    const graphics = this.add.graphics();
-    graphics.lineStyle(5, 0xff0f00, 1);
-    graphics.strokeRoundedRect(
-      buttonCoords.x,
-      buttonCoords.y,
-      buttonCoords.width,
-      buttonCoords.height,
-      20
-    );
+    this.add.text(textX, 510, "Launch escape pods:\nup arrow", {
+      fontFamily: EIGHTBIT_WONDER,
+      fontSize: `${instructionsTextSize}px`
+    }).setOrigin(0, .5)
+  }
 
-    const startText = this.add.text(0, buttonCoords.y, "Start", {
-      font: "64px \"8BIT WONDER\"",
+  createStartInstructions() {
+    const instructions = this.add.text(1280, 710, "Press SPACE to start ", {
+      fontFamily: EIGHTBIT_WONDER,
+      fontSize: "32px",
+      stroke: "#000",
+      strokeThickness: 4,
+    }).setOrigin(1, 1)
+
+    this.tweens.add({
+      targets: instructions,
+      alpha: .25,
+      duration: 750,
+      yoyo: true,
+      loop: -1
     });
-    startText.setTint(0x00ffff, 0xffffff, 0x0000ff, 0xff00f0);
-    startText.x = buttonCoords.x + (buttonCoords.width - startText.width) / 2;
-    startText.y =
-      buttonCoords.y + buttonCoords.height / 2 - startText.height / 2;
-
-    this.input.on(
-      "gameobjectdown",
-      (
-        pointer: Phaser.Input.Pointer,
-        gameObject: Phaser.GameObjects.GameObject
-      ) => {
-        if (gameObject.name === buttonZone.name) {
-          this.events.emit(this.StartGameEvent);
-        }
-      }
-    );
   }
 
   update() {
@@ -115,6 +98,7 @@ export class MenuScene extends Phaser.Scene {
 
   startGameScene() {
     this.#music.stop();
+    this.scene.start("UiScene");
     this.scene.start("GameScene");
   }
 }

@@ -40,7 +40,7 @@ export class UiScene extends Phaser.Scene {
   #pauseLabel!: Phaser.GameObjects.Text;
   
   constructor() {
-    super({ key: "UiScene", active: true });
+    super({ key: "UiScene", active: false });
   }
 
   preload() {
@@ -78,7 +78,6 @@ export class UiScene extends Phaser.Scene {
       fontFamily: EIGHTBIT_WONDER,
       fontSize: "128px",
       padding: { x: 20, y: 10 },
-      shadow: { offsetX: 10, offsetY: 10, color: "#0f0f0f", blur: 25 }
     })
     .setOrigin(.5, .5)
     .setStroke("#077", 10)
@@ -106,19 +105,20 @@ export class UiScene extends Phaser.Scene {
     // })
     const labelX = 10
     const firstLabelY = 20
+    const firstValueY = firstLabelY + 4;
     const valueTextSize = 32
     const rowHeight = valueTextSize + 3
-    const valueX = 180
-    const labelStyle = { fontFamily: EIGHTBIT_WONDER, fontSize: "16px" }
-    const valueTextStyle = { fontSize: `${valueTextSize}px` }
+    const valueX = 240
+    const labelStyle = { fontFamily: EIGHTBIT_WONDER, fontSize: "16px", color: "#00FFFF" }
+    const valueTextStyle = { fontFamily: EIGHTBIT_WONDER, fontSize: `${valueTextSize}px`, color: "#FF0099" }
 
     this.add.text(labelX, firstLabelY, "Pods escaped:", labelStyle)
     this.add.text(labelX, firstLabelY + rowHeight, "Pods destroyed:", labelStyle)
     this.add.text(labelX, firstLabelY + rowHeight * 2, "Meteors hit:", labelStyle)
 
-    this.podsSavedLabel = this.add.text(valueX, firstLabelY, '0', valueTextStyle).setOrigin(0, .32)
-    this.podsLostLabel = this.add.text(valueX, firstLabelY + rowHeight, '0', valueTextStyle).setOrigin(0, .32)
-    this.meteorHitsLabel = this.add.text(valueX, firstLabelY + rowHeight * 2, '0', valueTextStyle).setOrigin(0, .32)
+    this.podsSavedLabel = this.add.text(valueX, firstValueY, '0', valueTextStyle).setOrigin(0, .32)
+    this.podsLostLabel = this.add.text(valueX, firstValueY + rowHeight, '0', valueTextStyle).setOrigin(0, .32)
+    this.meteorHitsLabel = this.add.text(valueX, firstValueY + rowHeight * 2, '0', valueTextStyle).setOrigin(0, .32)
   }
 
   // updateCount(count: number) {
