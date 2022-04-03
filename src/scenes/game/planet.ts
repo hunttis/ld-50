@@ -37,6 +37,7 @@ export class Planet {
         this.#countdownText.setFontFamily(EIGHTBIT_WONDER)
         this.#countdownText.setFontSize(28)
         this.#countdownText.setOrigin(0.5, 0.5)
+        this.#countdownText.setColor("#00FF00")
 
         eventsManager.on(EVENTS.PODS_LAUNCHED, () => { this.startBuildTimer() })
     }

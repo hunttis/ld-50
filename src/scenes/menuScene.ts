@@ -44,7 +44,7 @@ export class MenuScene extends Phaser.Scene {
   createGameTitle() {
     const screenCenterX = this.cameras.default.width / 2;
 
-    this.add.text(screenCenterX, 100, "AND THEN THERE WERE NONE", {
+    this.add.text(screenCenterX, 100, "AND THEN THERE\n         WERE NONE", {
       // backgroundColor: "rgba(0, 0, 0, .5)",
       fontFamily: EIGHTBIT_WONDER,
       fontSize: "64px",
@@ -56,14 +56,18 @@ export class MenuScene extends Phaser.Scene {
   }
 
   createControlInstructions() {
-    const textX = this.cameras.default.width * .75;
+    const textX = this.cameras.default.width * .72;
     const textStartY = 350
     const instructionsTextSize = 20
     const rowHeight = instructionsTextSize + 25
     const textStyle = { fontFamily: EIGHTBIT_WONDER, fontSize: `${instructionsTextSize}px` }
 
-    this.add.text(textX + 50, textStartY, "Controls", {
-      fontSize: `${instructionsTextSize * 1.2}px`
+    this.add.text(textX - 50, textStartY, "Controls", {
+      fontFamily: EIGHTBIT_WONDER,
+      fontSize: `${instructionsTextSize * 1.5}px`,
+      color: "#000",
+      stroke: "#FFF",
+      strokeThickness: 4,
     }).setOrigin(0, .5)
 
     this.add.text(textX - 50, textStartY + rowHeight, "Rotate shields: ⬅ / ⮕", textStyle).setOrigin(0, .5)

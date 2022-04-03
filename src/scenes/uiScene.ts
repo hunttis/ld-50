@@ -27,11 +27,11 @@ export class UiScene extends Phaser.Scene {
   #muteOff: any;
 
   tutorialTexts: string[] = [
-    "Whew, what a peaceful morning...",
+    "Whew, what a peaceful morning ...",
     "Oh no, what is that?!",
-    "Uh oh.. better get all the rich..\nI mean all the people out of here!",
-    "Rotate the shield to protect us!\nUse the left/right arrow keys",
-    "Press arrow up to launch evacuation ships!",
+    "Uh oh ... better get all the rich ...\nI mean all the people out of here!",
+    "Rotate the shield to protect us!\nUse the ⬅ and ⮕ keys",
+    "Press ⬆ to launch evacuation ships!",
     "Hey! Don't just smash them against the shield or rocks!\nThat was Steve Jobs frozen head on that ship!",
     "Nice work! 100 people saved on that one!\nOnly around seven billion left!",
     ""
