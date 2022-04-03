@@ -1,13 +1,14 @@
 import { Planet } from "./game/planet";
 import { Meteor } from "./game/meteor";
-import { Ship } from "./game/ship";
 import { Shield } from "./game/shield";
-import { BigMeteor } from "./game/bigMeteor";
 import { EVENTS, STAT_CHANGE, eventsManager } from "../eventsManager";
 import { FxManager } from "../fxManager";
 import { GameOverScene } from "./gameOverScene"
 import { TutorialStep, UiScene } from "./uiScene";
 import { EIGHTBIT_WONDER } from "../fonts";
+
+const METEOR_SPAWN_DELAY_AT_START = 3000 // ms.
+const METEOR_SPAWN_ACCELERATION = 50 // ms. after each meteor creation
 
 export class GameScene extends Phaser.Scene {
   cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -20,9 +21,10 @@ export class GameScene extends Phaser.Scene {
   bigMeteor: Phaser.GameObjects.Sprite | null = null
 
   #startDelay = 3;
+  #meteorDelay = METEOR_SPAWN_DELAY_AT_START
+  #nextMeteorAt! : number
 
-  meteorMaximum = 10;
-  secondsGate = 3;
+  meteorMaximum = 20;
   peopleInEscapePod = 100
 
   peopleToSave = 7000000000
@@ -92,6 +94,7 @@ export class GameScene extends Phaser.Scene {
 
   create() {
     console.log("Game create");
+
     this.cursors = this.input.keyboard.createCursorKeys();
 
     this.planet = new Planet(this, this.cameras.main.width / 2, this.cameras.main.height / 2)
@@ -127,7 +130,6 @@ export class GameScene extends Phaser.Scene {
       }
     })
 
-
     this.#fxManager = new FxManager(this)
     this.#music = this.game.sound.add("gameplaymusic", {
       loop: true,
@@ -152,6 +154,8 @@ export class GameScene extends Phaser.Scene {
       frameRate: 9,
       repeat: -1,
     }) as Phaser.Animations.Animation
+
+    this.#nextMeteorAt = this.game.getTime() + this.#meteorDelay
   }
 
   #started = false
@@ -232,9 +236,13 @@ export class GameScene extends Phaser.Scene {
       return
     } 
 
-    if (this.#started && ((time / 1000) | 0) % this.secondsGate === 0) {
-      this.secondsGate += 1
+    if (this.#started && time > this.#nextMeteorAt) {
+      if (this.#meteorDelay > 200) {
+        this.#meteorDelay -= METEOR_SPAWN_ACCELERATION
+      }
+      this.#nextMeteorAt = time + this.#meteorDelay
       if (!this.meteors.isFull()) {
+        console.log(`Meteor creation delay is now ${this.#meteorDelay} ms.`)
         this.createMeteor(this.planet.getCenter())
       }
     }
