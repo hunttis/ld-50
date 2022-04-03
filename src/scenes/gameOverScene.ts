@@ -28,7 +28,7 @@ export class GameOverScene extends Phaser.Scene {
 
   podsEscaped: number
 
-  constructor() {
+  constructor(peopleSaved: number) {
     super({ key: "GameOverScene", active: false, visible: false })
     this.podsEscaped = 0
   }

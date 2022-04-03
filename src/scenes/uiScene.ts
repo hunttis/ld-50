@@ -22,6 +22,8 @@ export class UiScene extends Phaser.Scene {
   #tutorialLabel!: Phaser.GameObjects.Text;
   #tutorialCooldownMax: number = 2
   #tutorialCooldown: number = this.#tutorialCooldownMax
+  #muteOn: any;
+  #muteOff: any;
 
   tutorialTexts: string[] = [
     "Whew, what a peaceful morning...",
@@ -36,6 +38,11 @@ export class UiScene extends Phaser.Scene {
 
   constructor() {
     super({ key: "UiScene", active: true });
+  }
+
+  preload() {
+    this.load.image("muteOn", "assets/images/muteOn.png");
+    this.load.image("muteOff", "assets/images/muteOff.png");
   }
 
   create() {
@@ -67,6 +74,8 @@ export class UiScene extends Phaser.Scene {
       {fontSize: "32px"}
     )
     this.#tutorialLabel.x -= this.#tutorialLabel.width / 2
+
+    this.createMuteIndicator();
 
     eventsManager.on(EVENTS.TUTORIAL_ADVANCE, this.advanceTutorial, this)
     eventsManager.on(EVENTS.UPDATE_SCORE, this.updateCount, this)
@@ -140,12 +149,19 @@ export class UiScene extends Phaser.Scene {
   }
 
   toggleMute() {
-    this.systemLabelCooldown = 2;
-    this.systemLabel.text = "Sounds on: " + !this.sound.mute
-    this.systemLabel.x = 1280 - (this.systemLabel.width + 10)
-
-    console.log("Toggling mute:", this.sound.mute)
+    this.#muteOn.visible = this.sound.mute;
+    this.#muteOff.visible = !this.sound.mute;
   }
   
+  createMuteIndicator() {
+    const cameraWidth = this.cameras.default.width;
 
+    const size = 32;
+    const x = cameraWidth - size;
+    const y = size;
+
+    this.#muteOn = this.add.image(x, y, "muteOn");
+    this.#muteOn.visible = !this.sound.mute;
+    this.#muteOff = this.add.image(x, y, "muteOff");
+    this.#muteOff.visible = this.sound.mute;  }
 }

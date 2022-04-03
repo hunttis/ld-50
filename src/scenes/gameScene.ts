@@ -110,7 +110,7 @@ export class GameScene extends Phaser.Scene {
       loop: true,
       volume: 0.5
     })
-    //music.play();
+    music.play();
 
     var quitKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
     quitKey.on('down', () => {
@@ -120,8 +120,8 @@ export class GameScene extends Phaser.Scene {
 
     var muteKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
     muteKey.on('down', () => {
-      this.sound.mute = !this.sound.mute
-      eventsManager.emit(EVENTS.TOGGLE_MUTE)
+      this.sound.mute = !this.sound.mute;
+      eventsManager.emit(EVENTS.TOGGLE_MUTE);
     });
 
     this.#meteorAnimation = this.anims.create({
