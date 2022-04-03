@@ -44,11 +44,9 @@ export class GameOverScene extends Phaser.Scene {
       + (peopleSaved / 7_000_000_000)
       + "% of the planet's population.)"
 
-    // const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
-    // const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
-    const screenCenterX = this.scale.width / 2;
-    const screenCenterY = this.scale.height / 2;
-    const screenOneThirdY = this.scale.height / 3;
+    const screenCenterX = this.cameras.main.width / 2;
+    const screenCenterY = this.cameras.main.height / 2;
+    const screenOneThirdY = this.cameras.main.height / 3;
 
     this.add.text(
       screenCenterX,

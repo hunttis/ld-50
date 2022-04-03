@@ -30,6 +30,7 @@ export class Ship extends Phaser.Physics.Matter.Sprite{
         this.setCollisionCategory(CollisionGroup.Ship)
         this.setCollidesWith(CollisionGroup.Meteor | CollisionGroup.Shield)
         this.setOnCollide(() => {
+            eventsManager.emit(EVENTS.EXPLOSION, this.x, this.y)
             this.#destroyed = true
             this.destroy()
         })

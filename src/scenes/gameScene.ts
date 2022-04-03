@@ -4,6 +4,7 @@ import { Ship } from "./game/ship";
 import { Shield } from "./game/shield";
 import { BigMeteor } from "./game/bigMeteor";
 import { EVENTS, eventsManager } from "../eventsManager";
+import { FxManager } from "../fxManager";
 
 export class GameScene extends Phaser.Scene {
   cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -16,7 +17,7 @@ export class GameScene extends Phaser.Scene {
   bigMeteor: Phaser.GameObjects.Sprite | null = null
 
   meteorMaximum = 10;
-  secondsGate = 1;
+  secondsGate = 3;
   peopleInEscapePod = 100
 
   peopleToSave = 7000000000
@@ -24,6 +25,8 @@ export class GameScene extends Phaser.Scene {
 
   toDispose = new Set<{dispose(): void}>()
   #noticeText!: Phaser.GameObjects.Text;
+
+  #fxManager!: FxManager;
 
   constructor() {
     super({ active: false, visible: false });
@@ -33,9 +36,16 @@ export class GameScene extends Phaser.Scene {
 
   preload() {
     console.log("Game preload");
+
+    this.load.audio("gameplaymusic", ["assets/music/gameplay.mp3"])
+
     this.load.image("planet", "assets/images/planet.png");
     this.load.image("meteor", "assets/images/meteor.png");
-    this.load.image("shield", "assets/images/shield2.png");
+    // this.load.image("shield", "assets/images/shield2.png");
+    this.load.spritesheet("shield", "assets/images/shieldframes.png", {
+      frameWidth: 8,
+      frameHeight: 48
+    })
     this.load.image("rocket", "assets/images/rocket.png");
     this.load.image("flame", "assets/images/flame.png");
 
@@ -62,12 +72,21 @@ export class GameScene extends Phaser.Scene {
       this.peopleSaved += this.peopleInEscapePod
       eventsManager.emit(EVENTS.UPDATE_SCORE, this.peopleSaved)
     })
+
+    this.#fxManager = new FxManager(this)
+    var music = this.game.sound.add("gameplaymusic", {
+      loop: true,
+      volume: 0.5
+    })
+    music.play();
   }
 
   #started = false
   start = () => {
     if (this.#started) return
     this.#started = true
+
+    
 
     this.#noticeText.text = "PREPARE FOR DESTRUCTION"
     this.#noticeText.alpha = 0
@@ -134,5 +153,10 @@ export class GameScene extends Phaser.Scene {
         this.createMeteor(this.planet.getCenter())
       }
     }
+
+    if (this.planet.isCompletelyOnFire || this.shield.isCompletelyGone) {
+      // TODO END GAME!
+    }
+
   }
 }

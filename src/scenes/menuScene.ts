@@ -2,6 +2,7 @@ import { GameScene } from "./gameScene";
 
 export class MenuScene extends Phaser.Scene {
   StartGameEvent: string = "StartGameEvent";
+  #music: any
 
   constructor() {
     super({ active: false, visible: false });
@@ -12,6 +13,7 @@ export class MenuScene extends Phaser.Scene {
   preload() {
     console.log("Menu preload");
     this.scene.add("GameScene", GameScene, false);
+    this.load.audio("mainmenumusic", ["assets/music/start_menu.mp3"])
   }
 
   create() {
@@ -26,12 +28,17 @@ export class MenuScene extends Phaser.Scene {
       console.log("key", event.key);
       this.events.emit(this.StartGameEvent);
     });
+    this.#music = this.game.sound.add("mainmenumusic", {
+      loop: true,
+      volume: 0.5
+    })
+    this.#music.play();
   }
 
   createGameTitle() {
     const cameraWidth = this.cameras.default.width;
 
-    const text1 = this.add.text(0, 100, "Ludum Dare 50", { font: "64px Arial" });
+    const text1 = this.add.text(0, 100, "Impending doom!", { font: "64px Arial" });
     text1.setTint(0xff00ff, 0xffff00, 0x0000ff, 0xff0000);
     text1.x = cameraWidth / 2 - text1.width / 2;
   }
@@ -93,6 +100,7 @@ export class MenuScene extends Phaser.Scene {
   }
 
   startGameScene() {
+    this.#music.stop();
     this.scene.start("GameScene");
   }
 }

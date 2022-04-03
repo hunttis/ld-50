@@ -23,6 +23,7 @@ export function startGame() {
     },
     parent: "game",
     backgroundColor: "#0f0f0f",
+    // scene: [MenuScene]
     scene: [GameScene, UiScene]
   };
 

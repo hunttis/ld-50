@@ -46,6 +46,10 @@ export class PlanetLocation {
         return !this.#ship
     }
 
+    get isOnFire() {
+        return this.#onFire
+    }
+
     update(d:number) {
         if (this.#onFire && !this.#fireEmitter) {
             
@@ -93,5 +97,8 @@ export class PlanetLocation {
             this.#onMeteorCollision(this)
         } 
         this.#onFire = true
+        if (this.#ship) {
+            this.#ship.destroy()
+        }
     }
 }

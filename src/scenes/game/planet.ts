@@ -74,4 +74,8 @@ export class Planet {
     destroy() {
         this.#timer?.destroy()
     }
+    
+    get isCompletelyOnFire() {
+        return this.#locations.filter(loc => !loc.isOnFire).length === 0
+    }
 }

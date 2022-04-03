@@ -1,3 +1,5 @@
+import { Events } from "matter";
+import { EVENTS, eventsManager } from "src/eventsManager";
 import { CollisionGroup } from "./collisions";
 import { Planet } from "./planet";
 import { ShieldSegment } from "./shieldSegment";
@@ -16,6 +18,7 @@ export class Shield extends Phaser.GameObjects.Group {
         this.#yLoc = yLoc
         this.#onSegmentDestroyed = onSegmentDestroyed
 
+        // seg height 8
         const segmentWidth = 48
 
         const circumference = radius * 2 * Math.PI
@@ -52,6 +55,10 @@ export class Shield extends Phaser.GameObjects.Group {
         return this.getChildren() as ShieldSegment[]
     }
 
+    get isCompletelyGone() {
+        return this.getChildren().length === 0
+    }
+
     update(d: number) {
         let angle = this.cursors.left!.isDown ? -0.02 : 0
         angle += this.cursors.right!.isDown ? 0.02 : 0
@@ -59,6 +66,8 @@ export class Shield extends Phaser.GameObjects.Group {
         if (angle) {
             const segments = this.#shieldSegments()
             Phaser.Actions.RotateAroundDistance(segments, {x: this.#xLoc, y: this.#yLoc}, angle, 150)
+
+            eventsManager.emit(EVENTS.SHIELD_TURNING)
 
             segments.forEach(segment => {
                 segment.setAngle(Phaser.Math.RadToDeg(Phaser.Math.Angle.BetweenPoints({x: this.#xLoc,y: this.#yLoc}, segment.getCenter())))

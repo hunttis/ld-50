@@ -1,4 +1,5 @@
 import { CollisionGroup } from "./collisions";
+import { EVENTS, eventsManager } from "../../eventsManager";
 
 export class Meteor extends Phaser.Physics.Matter.Sprite {
 
@@ -14,7 +15,14 @@ export class Meteor extends Phaser.Physics.Matter.Sprite {
         this.setCollisionCategory(CollisionGroup.Meteor)
         this.setCollidesWith(CollisionGroup.Shield | CollisionGroup.Ship | CollisionGroup.Planet)
         this.setOnCollide((pair: any) => {
-          this.destroy()
+            const a = pair.bodyA?.gameObject
+            const b = pair.bodyB?.gameObject
+            if (a?.name === "Meteor") {
+                eventsManager.emit(EVENTS.EXPLOSION, a.x, a.y)
+            } else if (b?.name === "Meteor") {
+                eventsManager.emit(EVENTS.EXPLOSION, b.x, b.y)
+            }
+            this.destroy()
         })
 
         this.name = "Meteor"
