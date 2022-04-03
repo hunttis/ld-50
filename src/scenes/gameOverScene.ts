@@ -25,6 +25,7 @@ export class GameOverScene extends Phaser.Scene {
     fontSize: "20px"
   }
   
+  #music!: Phaser.Sound.BaseSound
 
   podsEscaped: number
 
@@ -35,6 +36,10 @@ export class GameOverScene extends Phaser.Scene {
 
   init(data: GameData) {
     this.podsEscaped = data.podsEscaped
+  }
+
+  preload() {
+    this.load.audio("gameovermusic", ["assets/music/gameover.mp3", "assets/music/gameover.ogg"]);
   }
 
   create() {
@@ -93,5 +98,18 @@ export class GameOverScene extends Phaser.Scene {
       this.statisticsStyle
     ).setOrigin(.5, 0);
     
+    this.#music = this.game.sound.add("gameovermusic", {
+      loop: true,
+      volume: 0.5
+    })
+    this.#music.play();
+
+    var mainMenuKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    mainMenuKey.on('down', () => {
+      this.#music.stop();
+      this.scene.start("MenuScene")
+    });
+
+
   }
 }

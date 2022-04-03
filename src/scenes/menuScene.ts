@@ -13,7 +13,8 @@ export class MenuScene extends Phaser.Scene {
 
   preload() {
     console.log("Menu preload");
-    this.scene.add("GameScene", GameScene, false);
+    // this.scene.add("GameScene", GameScene, false);
+    
     this.load.audio("mainmenumusic", ["assets/music/mainmenu.mp3", "assets/music/mainmenu.ogg"]);
     this.load.image("menubackground", "assets/images/menubackground.png");
   }

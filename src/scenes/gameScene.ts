@@ -36,6 +36,7 @@ export class GameScene extends Phaser.Scene {
 
   #fxManager!: FxManager;
   #meteorAnimation!: Phaser.Animations.Animation
+  #music!: Phaser.Sound.BaseSound
 
   constructor() {
     super({ key: "GameScene",  active: false, visible: false });
@@ -124,11 +125,11 @@ export class GameScene extends Phaser.Scene {
 
 
     this.#fxManager = new FxManager(this)
-    var music = this.game.sound.add("gameplaymusic", {
+    this.#music = this.game.sound.add("gameplaymusic", {
       loop: true,
       volume: 0.5
     })
-    music.play();
+    this.#music.play();
 
     var quitKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
     quitKey.on('down', () => {
@@ -243,6 +244,7 @@ export class GameScene extends Phaser.Scene {
 
   goToGameOver() {
     console.log("Game was quit...")
+    this.#music.stop()
     this.scene.stop("UiScene")
     this.scene.start("GameOverScene", { podsEscaped: this.#podsEscaped });
   }

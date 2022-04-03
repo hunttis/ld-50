@@ -24,17 +24,13 @@ export class FxManager {
         this.#starManager.setDepth(-1)
         this.#starEmitter = this.#starManager.createEmitter({
             scale: { start: 1.5, end: 0},
-            // angle: {min: 0, max: 360},
             lifespan: { min: 5000, max: 10000},
             alpha: {start: 0, end: 1},
-            // rotate: {min: 0, max: 100},
             emitZone: {
                 source: new Phaser.Geom.Rectangle(0, 0, 1280, 720),
                 type: 'random',
                 quantity: 1
             },
-            // frequency: 1,
-            
         })
                 
 
@@ -73,13 +69,12 @@ export class FxManager {
         eventsManager.on(EVENTS.FLAMETRAIL, this.flameTrail, this)
         eventsManager.on(EVENTS.SMOKETRAIL, this.smokeTrail, this)
 
-        this.#asteroidCreateSound = scene.game.sound.add("sfx_asteroid_create", {volume: 1})
-        this.#asteroidHitPlanetSound = scene.game.sound.add("sfx_asteroid_hit_planet", {volume: 1})
-        this.#asteroidHitShieldSound = scene.game.sound.add("sfx_asteroid_hit_shield", {volume: 1})
-        this.#rocketHitShieldSound = scene.game.sound.add("sfx_rocket_hit_shield", {volume: 1})
-        this.#rocketLaunchSound = scene.game.sound.add("sfx_rocket_launch", {volume: 1})
-        this.#shieldRotateSound = scene.game.sound.add("sfx_shield_rotate", {volume: 1})
-    
+        this.#asteroidCreateSound = scene.game.sound.add("sfx_asteroid_create", {volume: 0.5})
+        this.#asteroidHitPlanetSound = scene.game.sound.add("sfx_asteroid_hit_planet", {volume: 0.5})
+        this.#asteroidHitShieldSound = scene.game.sound.add("sfx_asteroid_hit_shield", {volume: 0.5})
+        this.#rocketHitShieldSound = scene.game.sound.add("sfx_rocket_hit_shield", {volume: 0.5})
+        this.#rocketLaunchSound = scene.game.sound.add("sfx_rocket_launch", {volume: 0.5})
+        this.#shieldRotateSound = scene.game.sound.add("sfx_shield_rotate", {volume: 0.5})
     }
 
     explosion(xLoc: number , yLoc: number) {

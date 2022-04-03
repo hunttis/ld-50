@@ -10,7 +10,7 @@ export enum TutorialStep {
 }
 
 export class UiScene extends Phaser.Scene {
-  scoreLabel!: Phaser.GameObjects.Text;
+  // scoreLabel!: Phaser.GameObjects.Text;
   podsSavedLabel!: Phaser.GameObjects.Text;
   podsLostLabel!: Phaser.GameObjects.Text;
   meteorHitsLabel!: Phaser.GameObjects.Text;
@@ -50,19 +50,7 @@ export class UiScene extends Phaser.Scene {
   create() {
     console.log("UI create");
 
-    this.scoreLabel = this.add.text(10, 10, 'People saved: 0', {
-      fontSize: "32px"
-    })
-
-    this.podsSavedLabel = this.add.text(10, 100, '0', {
-      fontSize: "32px"
-    })
-    this.podsLostLabel = this.add.text(10, 150, '0', {
-      fontSize: "32px"
-    })
-    this.meteorHitsLabel = this.add.text(10, 200, '0', {
-      fontSize: "32px"
-    })
+    this.createStatsBox()
 
     this.systemLabel = this.add.text(1280, 700, 'System', {
       fontSize: "16px"
@@ -81,14 +69,14 @@ export class UiScene extends Phaser.Scene {
     const screenCenterY = this.cameras.main.height / 2;
 
     this.#pauseLabel = this.add.text(screenCenterX, screenCenterY, "GAME PAUSED", {
-      backgroundColor: "rgba(0, 0, 0, .75)",
+      backgroundColor: "rgba(0, 0, 0, .85)",
       fontSize: "128px",
       padding: { x: 20, y: 10 },
       shadow: { offsetX: 10, offsetY: 10, color: "#0f0f0f", blur: 25 }
     })
-    .setStroke("#007777", 10)
     .setOrigin(.5, .5)
-    .setShadow(3, 3, "#222222", 2, true, true)
+    .setStroke("#077", 10)
+    .setShadow(3, 3, "#222", 2, true, true)
     .setVisible(false)
 
     var pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
@@ -100,14 +88,32 @@ export class UiScene extends Phaser.Scene {
     this.createMuteIndicator();
 
     eventsManager.on(EVENTS.TUTORIAL_ADVANCE, this.advanceTutorial, this)
-    eventsManager.on(EVENTS.UPDATE_SCORE, this.updateCount, this)
+    // eventsManager.on(EVENTS.UPDATE_SCORE, this.updateCount, this)
     eventsManager.on(EVENTS.UPDATE_STATS, this.updateStats, this)
     eventsManager.on(EVENTS.TOGGLE_MUTE, this.toggleMute, this)
   }
 
-  updateCount(count: number) {
-    this.scoreLabel.text = `People saved: ${count}`
+  createStatsBox() {
+    // this.scoreLabel = this.add.text(10, 10, 'People saved: 0', {
+    //   fontSize: "32px"
+    // })
+
+    const statsBox = this.add.container()
+
+    this.podsSavedLabel = this.add.text(10, 100, '0', {
+      fontSize: "32px"
+    })
+    this.podsLostLabel = this.add.text(10, 150, '0', {
+      fontSize: "32px"
+    })
+    this.meteorHitsLabel = this.add.text(10, 200, '0', {
+      fontSize: "32px"
+    })
   }
+
+  // updateCount(count: number) {
+  //   this.scoreLabel.text = `People saved: ${count}`
+  // }
 
   updateStats(stat: STAT_CHANGE, newValue: number) {
     if (stat === STAT_CHANGE.PodEscaped) {
