@@ -79,7 +79,12 @@ export class GameScene extends Phaser.Scene {
 
     this.load.audio("sfx_asteroid_create", ["assets/sfx/asteroid_create.mp3", "assets/sfx/asteroid_create.ogg"])
     this.load.audio("sfx_asteroid_hit_planet", ["assets/sfx/asteroid_hit_planet.mp3", "assets/sfx/asteroid_hit_planet.ogg"])
-    this.load.audio("sfx_asteroid_hit_shield", ["assets/sfx/asteroid_hit_shield.mp3", "assets/sfx/asteroid_hit_shield.ogg"])
+    this.load.audio("sfx_asteroid_hit_shield_1", ["assets/sfx/asteroid_hit_shield_1.mp3", "assets/sfx/asteroid_hit_shield_1.ogg"])
+    this.load.audio("sfx_asteroid_hit_shield_2", ["assets/sfx/asteroid_hit_shield_2.mp3", "assets/sfx/asteroid_hit_shield_2.ogg"])
+    this.load.audio("sfx_asteroid_hit_shield_3", ["assets/sfx/asteroid_hit_shield_3.mp3", "assets/sfx/asteroid_hit_shield_3.ogg"])
+    this.load.audio("sfx_asteroid_hit_shield_4", ["assets/sfx/asteroid_hit_shield_4.mp3", "assets/sfx/asteroid_hit_shield_4.ogg"])
+    this.load.audio("sfx_asteroid_hit_shield_5", ["assets/sfx/asteroid_hit_shield_5.mp3", "assets/sfx/asteroid_hit_shield_5.ogg"])
+    this.load.audio("sfx_asteroid_hit_shield_6", ["assets/sfx/asteroid_hit_shield_6.mp3", "assets/sfx/asteroid_hit_shield_6.ogg"])
     this.load.audio("sfx_rocket_hit_shield", ["assets/sfx/rocket_hit_shield.mp3", "assets/sfx/rocket_hit_shield.ogg"])
     this.load.audio("sfx_rocket_launch", ["assets/sfx/rocket_launch.mp3", "assets/sfx/rocket_launch.ogg"])
     this.load.audio("sfx_shield_rotate", ["assets/sfx/shield_rotate.mp3", "assets/sfx/shield_rotate.ogg"])

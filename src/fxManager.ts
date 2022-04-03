@@ -13,10 +13,12 @@ export class FxManager {
 
     #asteroidCreateSound!: Phaser.Sound.BaseSound
     #asteroidHitPlanetSound!: Phaser.Sound.BaseSound
-    #asteroidHitShieldSound!: Phaser.Sound.BaseSound
+    #asteroidHitShieldSounds!: Phaser.Sound.BaseSound[]
     #rocketHitShieldSound!: Phaser.Sound.BaseSound
     #rocketLaunchSound!: Phaser.Sound.BaseSound
     #shieldRotateSound!: Phaser.Sound.BaseSound
+
+    nextAsteroidSound: number = 0
 
     constructor(scene: Phaser.Scene) {
 
@@ -71,7 +73,14 @@ export class FxManager {
 
         this.#asteroidCreateSound = scene.game.sound.add("sfx_asteroid_create", {volume: 0.5})
         this.#asteroidHitPlanetSound = scene.game.sound.add("sfx_asteroid_hit_planet", {volume: 0.5})
-        this.#asteroidHitShieldSound = scene.game.sound.add("sfx_asteroid_hit_shield", {volume: 0.5})
+        this.#asteroidHitShieldSounds = [
+            scene.game.sound.add("sfx_asteroid_hit_shield_1", {volume: 0.8}),
+            scene.game.sound.add("sfx_asteroid_hit_shield_2", {volume: 0.8}),
+            scene.game.sound.add("sfx_asteroid_hit_shield_3", {volume: 0.8}),
+            scene.game.sound.add("sfx_asteroid_hit_shield_4", {volume: 0.8}),
+            scene.game.sound.add("sfx_asteroid_hit_shield_5", {volume: 0.8}),
+            scene.game.sound.add("sfx_asteroid_hit_shield_6", {volume: 0.8})
+        ]
         this.#rocketHitShieldSound = scene.game.sound.add("sfx_rocket_hit_shield", {volume: 0.5})
         this.#rocketLaunchSound = scene.game.sound.add("sfx_rocket_launch", {volume: 0.5})
         this.#shieldRotateSound = scene.game.sound.add("sfx_shield_rotate", {volume: 0.5})
@@ -79,7 +88,8 @@ export class FxManager {
 
     explosion(xLoc: number , yLoc: number) {
         this.#explosionEmitter.explode(20, xLoc, yLoc)
-        this.#asteroidHitShieldSound.play()
+
+        this.#asteroidHitShieldSounds[this.nextAsteroidSound++ % this.#asteroidHitShieldSounds.length].play()
     }
 
     groundCollision(xLoc: number, yLoc: number) {

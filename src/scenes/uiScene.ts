@@ -98,7 +98,9 @@ export class UiScene extends Phaser.Scene {
     //   fontSize: "32px"
     // })
 
-    const statsBox = this.add.container()
+    this.add.text(10, 10, "Pods escaped:", { fontSize: "16px" })
+    this.add.text(10, 45, "Pods destroyed:", { fontSize: "16px" })
+    this.add.text(10, 80, "Meteors hit:", { fontSize: "16px" })
 
     this.podsSavedLabel = this.add.text(10, 100, '0', {
       fontSize: "32px"
