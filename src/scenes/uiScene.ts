@@ -72,7 +72,6 @@ export class UiScene extends Phaser.Scene {
       backgroundColor: "rgba(0, 0, 0, .85)",
       fontSize: "128px",
       padding: { x: 20, y: 10 },
-      shadow: { offsetX: 10, offsetY: 10, color: "#0f0f0f", blur: 25 }
     })
     .setOrigin(.5, .5)
     .setStroke("#077", 10)

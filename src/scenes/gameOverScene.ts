@@ -52,21 +52,37 @@ export class GameOverScene extends Phaser.Scene {
 
     let descriptionText =
       "The planet was destroyed."
-      
+    
+    let adjective1 = "no thanks to your poopy"
+    let adjective2 = "inept"
+    let adjective3 = "pitiful few"
+
+    if (peopleSaved >= 1000) {
+      adjective1 = "thanks to your good"
+      adjective2 = "brave"
+      adjective3 = "some"
+    }
+    
+    if (peopleSaved >= 7000) {
+      adjective1 = "thanks to your valiant"
+      adjective2 = "heroic"
+      adjective3 = "almost all"
+    }
+
     if (peopleSaved > 0) {
-      descriptionText +=
-      "\n\n"
-      + "But thanks to your valiant efforts defending it and\n"
-      + "your courageous self-sacrifice, some of the planet's\n"
-      + "richest inhabitants with escape pods managed to escape."
+      descriptionText += 
+      `\n\nBut ${adjective1} efforts defending it and\nyour ${adjective2} self-sacrifice, ${adjective3} of the planet's\n richest inhabitants with escape pods managed to escape.`
     }
     
 
-    const scoreText = (peopleSaved ? peopleSaved : "No") + " people escaped."
+    const scoreText = (peopleSaved || "No") + " people escaped."
 
-    const statisticText = "(That's "
-      + (peopleSaved / 7_000_000_000).toFixed(10)
-      + "% of the planet's population.)"
+    let statisticText = ""
+    if (peopleSaved > 0) {
+      statisticText = "(That's "
+        + (peopleSaved / 7_000_000_000).toFixed(10)
+        + "% of the planet's population.)"
+    }
 
     const screenCenterX = this.cameras.main.width / 2;
     const screenCenterY = this.cameras.main.height / 2;
@@ -100,19 +116,20 @@ export class GameOverScene extends Phaser.Scene {
       statisticText,
       this.statisticsStyle
     ).setOrigin(.5, 0);
+
+    
+    this.add.text(
+      screenCenterX,
+      screenCenterY * 1.8,
+      "If you want to try again, refresh the page",
+      this.statisticsStyle
+    ).setOrigin(.5, 0)
     
     this.#music = this.game.sound.add("gameovermusic", {
       loop: true,
       volume: 0.5
     })
     this.#music.play();
-
-    var mainMenuKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-    mainMenuKey.on('down', () => {
-      this.#music.stop();
-      this.scene.start("MenuScene")
-    });
-
 
   }
 }
