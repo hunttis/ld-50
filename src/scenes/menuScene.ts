@@ -44,7 +44,7 @@ export class MenuScene extends Phaser.Scene {
   createGameTitle() {
     const screenCenterX = this.cameras.default.width / 2;
 
-    this.add.text(screenCenterX, 100, "AND THEN THERE\n         WERE NONE", {
+    this.add.text(screenCenterX, 100, "Rockmageddon", {
       // backgroundColor: "rgba(0, 0, 0, .5)",
       fontFamily: EIGHTBIT_WONDER,
       fontSize: "64px",

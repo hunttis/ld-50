@@ -67,7 +67,7 @@ export class GameOverScene extends Phaser.Scene {
       adjective3 = "some"
     }
     
-    if (peopleSaved >= 7000) {
+    if (peopleSaved >= 1500) {
       adjective1 = "thanks to your valiant"
       adjective2 = "heroic"
       adjective3 = "almost all"
