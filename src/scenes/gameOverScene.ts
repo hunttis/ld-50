@@ -1,4 +1,4 @@
-import { EIGHTBIT_WONDER } from "../fonts";
+import { EIGHTBIT_WONDER, VCR_OSD_MONO } from "../fonts";
 
 interface GameData {
     podsEscaped: number
@@ -6,7 +6,7 @@ interface GameData {
 
 export class GameOverScene extends Phaser.Scene {
   commonFontStyle = {
-    fontFamily: EIGHTBIT_WONDER,
+    fontFamily: VCR_OSD_MONO,
     fontSize: "24px",
     fill: "#ddeedd",
     align: "center",
@@ -15,6 +15,7 @@ export class GameOverScene extends Phaser.Scene {
   }
   headerStyle = {
     ...this.commonFontStyle,
+    fontFamily: EIGHTBIT_WONDER,
     fontSize: "64px",
     fill: "#00dd99"
   }
@@ -124,7 +125,7 @@ export class GameOverScene extends Phaser.Scene {
     this.add.text(
       screenCenterX,
       screenCenterY * 1.8,
-      "If you want to try again, refresh the page",
+      "If you want to try again, refresh the page...",
       this.statisticsStyle
     ).setOrigin(.5, 0)
     

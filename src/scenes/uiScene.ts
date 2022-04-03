@@ -1,5 +1,5 @@
 import { EVENTS, STAT_CHANGE, eventsManager } from "../eventsManager";
-import { EIGHTBIT_WONDER } from "../fonts";
+import { EIGHTBIT_WONDER, VCR_OSD_MONO } from "../fonts";
 
 export enum TutorialStep {
   FIRST_METEOR,
@@ -27,9 +27,9 @@ export class UiScene extends Phaser.Scene {
   #muteOff: any;
 
   tutorialTexts: string[] = [
-    "Whew, what a peaceful morning ...",
+    "Whew, what a peaceful morning...",
     "Oh no, what is that?!",
-    "Uh oh ... better get all the rich ...\nI mean all the people out of here!",
+    "Uh oh... better get all the rich ...\nI mean all the people out of here!",
     "Rotate the shield to protect us!\nUse the ⬅ and ⮕ keys",
     "Press ⬆ to launch evacuation ships!",
     "Hey! Don't just smash them against the shield or rocks!\nThat was Steve Jobs frozen head on that ship!",
@@ -64,8 +64,8 @@ export class UiScene extends Phaser.Scene {
       600,
       this.tutorialTexts[this.#tutorialStep],
       {
-        fontFamily: EIGHTBIT_WONDER,
-        fontSize: "24px",
+        fontFamily: VCR_OSD_MONO,
+        fontSize: "32px",
       }
     )
     this.#tutorialLabel.x -= this.#tutorialLabel.width / 2
