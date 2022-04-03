@@ -43,9 +43,9 @@ export class MenuScene extends Phaser.Scene {
   createGameTitle() {
     const screenCenterX = this.cameras.default.width / 2;
 
-    this.add.text(screenCenterX, 100, "THERE WILL BE CAKE", {
+    this.add.text(screenCenterX, 100, "AND THEN THERE WERE NONE", {
       // backgroundColor: "rgba(0, 0, 0, .5)",
-      fontSize: "96px",
+      fontSize: "80px",
       // padding: { x: 30, y: 10 },
     })
     .setOrigin(.5, .5)
