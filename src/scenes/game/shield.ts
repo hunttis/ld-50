@@ -1,5 +1,4 @@
-import { Events } from "matter";
-import { EVENTS, eventsManager } from "src/eventsManager";
+import { EVENTS, eventsManager } from "../../eventsManager";
 import { CollisionGroup } from "./collisions";
 import { Planet } from "./planet";
 import { ShieldSegment } from "./shieldSegment";
