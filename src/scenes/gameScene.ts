@@ -12,8 +12,6 @@ const METEOR_SPAWN_ACCELERATION = 50 // ms. after each meteor creation
 
 export class GameScene extends Phaser.Scene {
   cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
-  player!: Phaser.Physics.Matter.Sprite;
-  obstacle!: Phaser.Physics.Matter.Sprite;
   planet!: Planet
   meteors!: Phaser.GameObjects.Group
   shield!: Shield
@@ -27,14 +25,12 @@ export class GameScene extends Phaser.Scene {
   meteorMaximum = 20;
   peopleInEscapePod = 100
 
-  peopleToSave = 7000000000
   peopleSaved = 0
 
   #podsEscaped = 0
   #podsDestroyed = 0
   #meteorHits = 0
 
-  toDispose = new Set<{dispose(): void}>()
   #noticeText!: Phaser.GameObjects.Text;
 
   #fxManager!: FxManager;
@@ -74,9 +70,6 @@ export class GameScene extends Phaser.Scene {
     })
     this.load.image("rocket", "assets/images/rocket.png");
     this.load.image("flame", "assets/images/flame.png");
-
-    this.load.image("box", "assets/images/box.png");
-    this.load.image("box2", "assets/images/box2.png");
 
     this.load.audio("sfx_asteroid_create", ["assets/sfx/asteroid_create.mp3", "assets/sfx/asteroid_create.ogg"])
     this.load.audio("sfx_asteroid_hit_planet", ["assets/sfx/asteroid_hit_planet.mp3", "assets/sfx/asteroid_hit_planet.ogg"])
@@ -250,8 +243,6 @@ export class GameScene extends Phaser.Scene {
     if (this.planet.isCompletelyOnFire || this.shield.isCompletelyGone) {
       this.goToGameOver()
     }
-    
-
   }
 
   goToGameOver() {

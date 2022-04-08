@@ -13,18 +13,10 @@ export function startGame() {
       height: 720,
     },
     physics: {
-      default: "matter",
-      matter: {
-        // debug: {
-        //   showBody: true,
-        //   showStaticBody: true,
-        //   showSensors: true
-        // }
-      },
+      default: "matter"
     },
     parent: "game",
     backgroundColor: "#0f0f0f",
-    // scene: [MenuScene]
     scene: [MenuScene, GameScene, UiScene, GameOverScene]
   };
 
