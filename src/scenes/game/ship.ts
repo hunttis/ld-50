@@ -1,5 +1,4 @@
 import { CollisionGroup } from "./collisions";
-import { Planet } from "./planet";
 import { EVENTS, eventsManager } from "../../eventsManager";
 import { TutorialStep } from "../uiScene";
 
@@ -17,11 +16,8 @@ export class Ship extends Phaser.Physics.Matter.Sprite{
     #destroyed = false
     #saved = false
 
-    flyingTime = 3
-
     #text: Phaser.GameObjects.Text;
     #timerEvent?: Phaser.Time.TimerEvent;
-
 
     constructor(readonly scene: Phaser.Scene, xLoc: number, yLoc: number, angle: number) {
         super(scene.matter.world, xLoc, yLoc, 'rocket')

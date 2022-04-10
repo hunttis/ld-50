@@ -1,6 +1,4 @@
-import { CollisionGroup } from "./collisions";
 import { PlanetLocation } from "./planetLocation";
-import { Shield } from "./shield";
 import { EVENTS, eventsManager } from "../../eventsManager";
 import { EIGHTBIT_WONDER } from "../../fonts";
 
@@ -70,9 +68,6 @@ export class Planet {
     onMeteorCollision = (location: PlanetLocation) => {
         const idx = this.#activeLocations.indexOf(location)
         this.#activeLocations.splice(idx, 1)
-    }
-
-    onSegmentCollide = (pair: unknown) => {
     }
 
     update(d: number) {

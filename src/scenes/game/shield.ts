@@ -1,5 +1,4 @@
 import { EVENTS, eventsManager } from "../../eventsManager";
-import { CollisionGroup } from "./collisions";
 import { Planet } from "./planet";
 import { ShieldSegment } from "./shieldSegment";
 
@@ -58,7 +57,7 @@ export class Shield extends Phaser.GameObjects.Group {
         return this.getChildren().length === 0
     }
 
-    update(d: number) {
+    update() {
         let angle = this.cursors.left!.isDown ? -0.02 : 0
         angle += this.cursors.right!.isDown ? 0.02 : 0
 
