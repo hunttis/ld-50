@@ -8,6 +8,7 @@ import { TutorialStep, UiScene } from "./uiScene";
 import { EIGHTBIT_WONDER } from "../fonts";
 
 const METEOR_SPAWN_DELAY_AT_START = 3000 // ms.
+const METEOR_SPAWN_DELAY_MINIMUM = 250 // ms.
 const METEOR_SPAWN_ACCELERATION = 50 // ms. after each meteor creation
 
 export class GameScene extends Phaser.Scene {
@@ -24,7 +25,7 @@ export class GameScene extends Phaser.Scene {
   #meteorDelay = METEOR_SPAWN_DELAY_AT_START
   #nextMeteorAt! : number
 
-  meteorMaximum = 20;
+  meteorMaximum = 12;
   peopleInEscapePod = 100
 
   peopleToSave = 7000000000
@@ -237,12 +238,11 @@ export class GameScene extends Phaser.Scene {
     } 
 
     if (this.#started && time > this.#nextMeteorAt) {
-      if (this.#meteorDelay > 200) {
+      if (this.#meteorDelay > METEOR_SPAWN_DELAY_MINIMUM) {
         this.#meteorDelay -= METEOR_SPAWN_ACCELERATION
       }
       this.#nextMeteorAt = time + this.#meteorDelay
       if (!this.meteors.isFull()) {
-        console.log(`Meteor creation delay is now ${this.#meteorDelay} ms.`)
         this.createMeteor(this.planet.getCenter())
       }
     }
