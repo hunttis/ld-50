@@ -1,4 +1,5 @@
 import { EIGHTBIT_WONDER, VCR_OSD_MONO } from "../fonts";
+import { EVENTS, eventsManager } from "../eventsManager";
 
 interface GameData {
     podsEscaped: number
@@ -34,8 +35,8 @@ export class GameOverScene extends Phaser.Scene {
   podsEscaped: number
 
   constructor(peopleSaved: number) {
-    super({ key: "GameOverScene", active: false, visible: false })
-    this.podsEscaped = 0
+    super({ key: "GameOverScene" });
+    this.podsEscaped = 0;
   }
 
   init(data: GameData) {
@@ -125,15 +126,25 @@ export class GameOverScene extends Phaser.Scene {
     this.add.text(
       screenCenterX,
       screenCenterY * 1.8,
-      "If you want to try again, refresh the page...",
+      "Press SPACE to play again",
       this.statisticsStyle
     ).setOrigin(.5, 0)
-    
-    this.#music = this.game.sound.add("gameovermusic", {
-      loop: true,
-      volume: 0.5
-    })
+
+    this.#music = this.game.sound.get("gameovermusic");
+    if (!this.#music) {
+      this.#music = this.game.sound.add("gameovermusic", {
+        loop: true,
+        volume: 0.5
+      })
+    }
     this.#music.play();
 
+    const restartKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    restartKey.removeListener("down");
+    restartKey.on('down', () => {
+      this.#music.stop();
+      this.scene.start("GameScene")
+      this.scene.start("UiScene")
+    });
   }
 }

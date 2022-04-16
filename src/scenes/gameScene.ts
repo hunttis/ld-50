@@ -38,13 +38,14 @@ export class GameScene extends Phaser.Scene {
   #meteorAnimation!: Phaser.Animations.Animation;
   #music!: Phaser.Sound.BaseSound;
 
+  #started = false;
+  #gameWasQuit = false;
+
   constructor() {
-    super({ key: "GameScene", active: false, visible: false });
+    super({ key: "GameScene" });
   }
 
   preload() {
-    console.log("Game preload");
-
     this.load.audio("gameplaymusic", [
       "assets/music/gameplay.mp3",
       "assets/music/gameplay.ogg",
@@ -122,8 +123,6 @@ export class GameScene extends Phaser.Scene {
   }
 
   create() {
-    console.log("Game create");
-
     this.cursors = this.input.keyboard.createCursorKeys();
 
     this.planet = new Planet(
@@ -135,8 +134,7 @@ export class GameScene extends Phaser.Scene {
       this,
       this.cameras.main.width / 2,
       this.cameras.main.height / 2,
-      this.planet,
-      this.start
+      this.planet
     );
 
     this.meteors = new Phaser.GameObjects.Group(this);
@@ -147,7 +145,9 @@ export class GameScene extends Phaser.Scene {
     this.#noticeText.setColor("#eedd00");
     this.#noticeText.setOrigin(0.5, 0.5);
 
-    eventsManager.on(EVENTS.POD_ESCAPED, () => {
+    eventsManager.addSingletonListener(EVENTS.SHIELD_SEGMENT_DESTROYED, this.start);
+
+    eventsManager.addSingletonListener(EVENTS.POD_ESCAPED, () => {
       this.peopleSaved += this.peopleInEscapePod;
       this.#podsEscaped++;
       eventsManager.emit(EVENTS.UPDATE_SCORE, this.peopleSaved);
@@ -157,7 +157,7 @@ export class GameScene extends Phaser.Scene {
         this.#podsEscaped
       );
     });
-    eventsManager.on(EVENTS.POD_DESTROYED, () => {
+    eventsManager.addSingletonListener(EVENTS.POD_DESTROYED, () => {
       this.#podsDestroyed++;
       eventsManager.emit(
         EVENTS.UPDATE_STATS,
@@ -165,7 +165,7 @@ export class GameScene extends Phaser.Scene {
         this.#podsDestroyed
       );
     });
-    eventsManager.on(EVENTS.METEOR_HITS_GROUND, () => {
+    eventsManager.addSingletonListener(EVENTS.METEOR_HITS_GROUND, () => {
       this.#meteorHits++;
       eventsManager.emit(
         EVENTS.UPDATE_STATS,
@@ -173,27 +173,32 @@ export class GameScene extends Phaser.Scene {
         this.#meteorHits
       );
     });
-    eventsManager.on(EVENTS.PAUSE_GAME, () => {
+    eventsManager.addSingletonListener(EVENTS.PAUSE_GAME, () => {
       if (this.scene.isPaused()) {
         this.scene.resume();
       } else {
         this.scene.pause();
       }
     });
-
     this.#fxManager = new FxManager(this);
-    this.#music = this.game.sound.add("gameplaymusic", {
-      loop: true,
-      volume: 0.5,
-    });
+    this.#music = this.game.sound.get("gameplaymusic");
+    if (!this.#music) {
+      this.#music = this.game.sound.add("gameplaymusic", {
+        loop: true,
+        volume: 0.5,
+      });
+    }
     this.#music.play();
 
-    var quitKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+    const quitKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+    quitKey.removeListener("down");
     quitKey.on("down", () => {
+      console.log('Quit key pressed');
       this.goToGameOver();
     });
 
-    var muteKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
+    const muteKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
+    muteKey.removeListener("down");
     muteKey.on("down", () => {
       this.sound.mute = !this.sound.mute;
       eventsManager.emit(EVENTS.TOGGLE_MUTE);
@@ -209,10 +214,8 @@ export class GameScene extends Phaser.Scene {
     this.#nextMeteorAt = this.game.getTime() + this.#meteorDelay;
   }
 
-  #started = false;
-
   start = () => {
-    if (this.#started) return;
+    if (this.#started || this.#gameWasQuit) return;
     this.#started = true;
 
     this.#noticeText.text = "PREPARE FOR\nDESTRUCTION";
@@ -316,8 +319,8 @@ export class GameScene extends Phaser.Scene {
 
   goToGameOver() {
     console.log("Game was quit...");
+    this.#gameWasQuit = true;
     this.#music.stop();
-    this.scene.stop("UiScene");
     this.scene.start("GameOverScene", { podsEscaped: this.#podsEscaped });
   }
 }

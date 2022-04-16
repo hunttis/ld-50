@@ -65,13 +65,13 @@ export class FxManager {
         })
         this.#smokeEmitter.setPosition(-100, -100);
 
-        eventsManager.on(EVENTS.EXPLOSION, this.explosion, this)
-        eventsManager.on(EVENTS.SHIELD_TURNING, this.shieldTurning, this)
-        eventsManager.on(EVENTS.SHIELD_STOPPED, this.shieldStopped, this)
-        eventsManager.on(EVENTS.FLAMETRAIL, this.flameTrail, this)
-        eventsManager.on(EVENTS.SMOKETRAIL, this.smokeTrail, this)
-        eventsManager.on(EVENTS.SHIP_LAUNCH, this.shipLaunch, this)
-        eventsManager.on(EVENTS.METEOR_HITS_GROUND, this.meteorHitsGRound, this)
+        eventsManager.addSingletonListener(EVENTS.EXPLOSION, this.explosion, this)
+        eventsManager.addSingletonListener(EVENTS.SHIELD_TURNING, this.shieldTurning, this)
+        eventsManager.addSingletonListener(EVENTS.SHIELD_STOPPED, this.shieldStopped, this)
+        eventsManager.addSingletonListener(EVENTS.FLAMETRAIL, this.flameTrail, this)
+        eventsManager.addSingletonListener(EVENTS.SMOKETRAIL, this.smokeTrail, this)
+        eventsManager.addSingletonListener(EVENTS.SHIP_LAUNCH, this.shipLaunch, this)
+        eventsManager.addSingletonListener(EVENTS.METEOR_HITS_GROUND, this.meteorHitsGRound, this)
 
         this.#asteroidCreateSound = scene.game.sound.add("sfx_asteroid_create", {volume: 0.5})
         this.#asteroidHitPlanetSound = scene.game.sound.add("sfx_asteroid_hit_planet", {volume: 0.8})

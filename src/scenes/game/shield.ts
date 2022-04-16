@@ -7,21 +7,18 @@ export class Shield extends Phaser.GameObjects.Group {
   #xLoc;
   #yLoc;
   #explosionManager: Phaser.GameObjects.Particles.ParticleEmitterManager;
-  #onSegmentDestroyed;
 
   constructor(
     readonly scene: Phaser.Scene,
     xLoc: number,
     yLoc: number,
     planet: Planet,
-    onSegmentDestroyed: () => void,
     radius: number = 152
   ) {
     super(scene);
 
     this.#xLoc = xLoc;
     this.#yLoc = yLoc;
-    this.#onSegmentDestroyed = onSegmentDestroyed;
 
     // seg height 8
     const segmentWidth = 48;
@@ -53,7 +50,7 @@ export class Shield extends Phaser.GameObjects.Group {
     emitter.setTint(0xff4400);
     emitter.setBlendMode(Phaser.BlendModes.ADD);
     emitter.explode(20, segment.x, segment.y);
-    this.#onSegmentDestroyed();
+    eventsManager.emit(EVENTS.SHIELD_SEGMENT_DESTROYED);
   };
 
   #shieldSegments(): ShieldSegment[] {

@@ -7,7 +7,7 @@ export class MenuScene extends Phaser.Scene {
   padding = 50;
 
   constructor() {
-    super({ key: "MenuScene", active: false, visible: false });
+    super({ key: "MenuScene" });
   }
 
   preload() {
@@ -35,6 +35,7 @@ export class MenuScene extends Phaser.Scene {
     var mainMenuKey = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.SPACE
     );
+    mainMenuKey.removeListener("down");
     mainMenuKey.on("down", () => {
       this.events.emit(this.StartGameEvent);
     });

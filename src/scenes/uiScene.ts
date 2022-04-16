@@ -40,7 +40,7 @@ export class UiScene extends Phaser.Scene {
   #pauseLabel!: Phaser.GameObjects.Text;
   
   constructor() {
-    super({ key: "UiScene", active: false });
+    super({ key: "UiScene" });
   }
 
   preload() {
@@ -85,6 +85,7 @@ export class UiScene extends Phaser.Scene {
     .setVisible(false)
 
     var pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+    pauseKey.removeListener('down');
     pauseKey.on('down', () => {
       eventsManager.emit(EVENTS.PAUSE_GAME)
       this.#pauseLabel.setVisible(!this.#pauseLabel.visible)
@@ -92,10 +93,9 @@ export class UiScene extends Phaser.Scene {
 
     this.createMuteIndicator();
 
-    eventsManager.on(EVENTS.TUTORIAL_ADVANCE, this.advanceTutorial, this)
-    // eventsManager.on(EVENTS.UPDATE_SCORE, this.updateCount, this)
-    eventsManager.on(EVENTS.UPDATE_STATS, this.updateStats, this)
-    eventsManager.on(EVENTS.TOGGLE_MUTE, this.toggleMute, this)
+    eventsManager.addSingletonListener(EVENTS.TUTORIAL_ADVANCE, this.advanceTutorial, this)
+    eventsManager.addSingletonListener(EVENTS.UPDATE_STATS, this.updateStats, this)
+    eventsManager.addSingletonListener(EVENTS.TOGGLE_MUTE, this.toggleMute, this)
   }
 
   createStatsBox() {

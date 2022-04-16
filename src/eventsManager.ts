@@ -7,6 +7,7 @@ export const EVENTS = {
     EXPLOSION: 'explosion',
     METEOR_HITS_GROUND: 'meteor-hits-ground',
     SHIELD_TURNING: 'shield-turning',
+    SHIELD_SEGMENT_DESTROYED: 'shield-segment-destroyed',
     FLAMETRAIL: 'flametrail',
     TUTORIAL_ADVANCE: 'tutorial-advance',
     SMOKETRAIL: 'smoketrail',
@@ -22,4 +23,12 @@ export enum STAT_CHANGE {
     MeteorHitGround
 }
 
-export const eventsManager = new Phaser.Events.EventEmitter()
+class CustomEventEmitter extends Phaser.Events.EventEmitter {
+    addSingletonListener(event: string | symbol, fn: Function, context?: any): CustomEventEmitter {
+        super.removeListener(event);
+        super.addListener(event, fn, context)
+        return this;
+    }
+}
+
+export const eventsManager = new CustomEventEmitter();
