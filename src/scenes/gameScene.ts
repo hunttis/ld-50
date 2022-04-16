@@ -4,7 +4,7 @@ import { Shield } from "./game/shield";
 import { EVENTS, STAT_CHANGE, eventsManager } from "../eventsManager";
 import { FxManager } from "../fxManager";
 import { GameOverScene } from "./gameOverScene";
-import { TutorialStep, UiScene } from "./uiScene";
+import { TutorialStep } from "./uiScene";
 import { EIGHTBIT_WONDER } from "../fonts";
 
 const METEOR_SPAWN_DELAY_AT_START = 3000; // ms.
@@ -19,8 +19,8 @@ export class GameScene extends Phaser.Scene {
 
   bigMeteor: Phaser.GameObjects.Sprite | null = null;
 
-  #startDelay = 3;
-  #meteorDelay = METEOR_SPAWN_DELAY_AT_START;
+  #startDelay!: number;
+  #meteorDelay!: number;
   #nextMeteorAt!: number;
 
   meteorMaximum = 12;
@@ -38,11 +38,18 @@ export class GameScene extends Phaser.Scene {
   #meteorAnimation!: Phaser.Animations.Animation;
   #music!: Phaser.Sound.BaseSound;
 
-  #started = false;
-  #gameWasQuit = false;
+  #started!: boolean;
+  #gameWasQuit!: boolean;
 
   constructor() {
     super({ key: "GameScene" });
+  }
+
+  init() {
+    this.#started = false;
+    this.#gameWasQuit = false;
+    this.#meteorDelay = METEOR_SPAWN_DELAY_AT_START;
+    this.#startDelay = 3;
   }
 
   preload() {
@@ -193,7 +200,6 @@ export class GameScene extends Phaser.Scene {
     const quitKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
     quitKey.removeListener("down");
     quitKey.on("down", () => {
-      console.log('Quit key pressed');
       this.goToGameOver();
     });
 
@@ -297,7 +303,7 @@ export class GameScene extends Phaser.Scene {
         this.planet.getCenter()
       );
       newMeteor.angle = Phaser.Math.RadToDeg(angleToPlanet);
-      newMeteor.thrust(0.02);
+      newMeteor.thrust(1.5 * delta);
       this.meteors.add(newMeteor);
       return;
     }
@@ -318,9 +324,9 @@ export class GameScene extends Phaser.Scene {
   }
 
   goToGameOver() {
-    console.log("Game was quit...");
     this.#gameWasQuit = true;
     this.#music.stop();
+    this.game.sound.stopAll();
     this.scene.start("GameOverScene", { podsEscaped: this.#podsEscaped });
   }
 }

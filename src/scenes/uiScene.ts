@@ -10,8 +10,9 @@ export enum TutorialStep {
   SHIP_SAVED,
 }
 
+const TUTORIAL_COOLDOWN_MAX: number = 2
+
 export class UiScene extends Phaser.Scene {
-  // scoreLabel!: Phaser.GameObjects.Text;
   podsSavedLabel!: Phaser.GameObjects.Text;
   podsLostLabel!: Phaser.GameObjects.Text;
   meteorHitsLabel!: Phaser.GameObjects.Text;
@@ -21,8 +22,7 @@ export class UiScene extends Phaser.Scene {
 
   #tutorialStep: number = 0
   #tutorialLabel!: Phaser.GameObjects.Text;
-  #tutorialCooldownMax: number = 2
-  #tutorialCooldown: number = this.#tutorialCooldownMax
+  #tutorialCooldown: number = TUTORIAL_COOLDOWN_MAX
   #muteOn: any;
   #muteOff: any;
 
@@ -43,14 +43,18 @@ export class UiScene extends Phaser.Scene {
     super({ key: "UiScene" });
   }
 
+  init() {
+    this.#tutorialStep = 0;
+    this.#tutorialCooldown = TUTORIAL_COOLDOWN_MAX;
+    this.systemLabelCooldown = 2;
+  }
+
   preload() {
     this.load.image("muteOn", "assets/images/muteOn.png");
     this.load.image("muteOff", "assets/images/muteOff.png");
   }
 
   create() {
-    console.log("UI create");
-
     this.createStatsBox()
 
     this.systemLabel = this.add.text(1280, 700, 'System', {
@@ -99,10 +103,6 @@ export class UiScene extends Phaser.Scene {
   }
 
   createStatsBox() {
-    // this.scoreLabel = this.add.text(10, 10, 'People saved: 0', {
-    //   fontFamily: EIGHTBIT_WONDER,
-    //   fontSize: "32px"
-    // })
     const labelX = 10
     const firstLabelY = 20
     const firstValueY = firstLabelY + 4;
@@ -120,10 +120,6 @@ export class UiScene extends Phaser.Scene {
     this.podsLostLabel = this.add.text(valueX, firstValueY + rowHeight, '0', valueTextStyle).setOrigin(0, .32)
     this.meteorHitsLabel = this.add.text(valueX, firstValueY + rowHeight * 2, '0', valueTextStyle).setOrigin(0, .32)
   }
-
-  // updateCount(count: number) {
-  //   this.scoreLabel.text = `People saved: ${count}`
-  // }
 
   updateStats(stat: STAT_CHANGE, newValue: number) {
     if (stat === STAT_CHANGE.PodEscaped) {
@@ -150,7 +146,7 @@ export class UiScene extends Phaser.Scene {
       this.nextTutorialStep()
     } else if (this.#tutorialStep === 5 && step === TutorialStep.SHIP_SAVED) {
       this.nextTutorialStep()
-      this.#tutorialCooldown = this.#tutorialCooldownMax * 2
+      this.#tutorialCooldown = TUTORIAL_COOLDOWN_MAX * 2
     }
   }
 
@@ -175,7 +171,7 @@ export class UiScene extends Phaser.Scene {
   nextTutorialStep(overrideCooldown: boolean = false) {
     // console.log(this.#tutorialCooldown)
     if (overrideCooldown || this.#tutorialCooldown < 0) {
-      this.#tutorialCooldown = this.#tutorialCooldownMax
+      this.#tutorialCooldown = TUTORIAL_COOLDOWN_MAX
       this.#tutorialStep += 1;
       this.setTutorialLabelToStep()
     }
