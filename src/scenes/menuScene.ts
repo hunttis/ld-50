@@ -7,13 +7,10 @@ export class MenuScene extends Phaser.Scene {
   padding = 50;
 
   constructor() {
-    super({ key: "MenuScene", active: false, visible: false });
+    super({ key: "MenuScene" });
   }
 
   preload() {
-    console.log("Menu preload");
-    // this.scene.add("GameScene", GameScene, false);
-
     this.load.audio("mainmenumusic", [
       "assets/music/mainmenu.mp3",
       "assets/music/mainmenu.ogg",
@@ -22,8 +19,6 @@ export class MenuScene extends Phaser.Scene {
   }
 
   create() {
-    console.log("Menu create");
-
     this.add.image(640, 360, "menubackground");
 
     this.createGameTitle();
@@ -32,9 +27,10 @@ export class MenuScene extends Phaser.Scene {
 
     this.events.on(this.StartGameEvent, this.startGameScene, this);
 
-    var mainMenuKey = this.input.keyboard.addKey(
+    const mainMenuKey = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.SPACE
     );
+    mainMenuKey.removeListener("down");
     mainMenuKey.on("down", () => {
       this.events.emit(this.StartGameEvent);
     });
@@ -120,8 +116,9 @@ export class MenuScene extends Phaser.Scene {
       })
       .setOrigin(1, 1);
 
+    // the version could perhaps be read from package.json but that would require build changes
     this.add
-      .text(1280, 24, "Post-jam build", {
+      .text(1280, 24, "Post-jam build, v. 1.0.2", {
         fontFamily: EIGHTBIT_WONDER,
         fontSize: "16px",
         stroke: "#000",

@@ -10,8 +10,9 @@ export enum TutorialStep {
   SHIP_SAVED,
 }
 
+const TUTORIAL_COOLDOWN_MAX: number = 2
+
 export class UiScene extends Phaser.Scene {
-  // scoreLabel!: Phaser.GameObjects.Text;
   podsSavedLabel!: Phaser.GameObjects.Text;
   podsLostLabel!: Phaser.GameObjects.Text;
   meteorHitsLabel!: Phaser.GameObjects.Text;
@@ -21,8 +22,7 @@ export class UiScene extends Phaser.Scene {
 
   #tutorialStep: number = 0
   #tutorialLabel!: Phaser.GameObjects.Text;
-  #tutorialCooldownMax: number = 2
-  #tutorialCooldown: number = this.#tutorialCooldownMax
+  #tutorialCooldown: number = TUTORIAL_COOLDOWN_MAX
   #muteOn: any;
   #muteOff: any;
 
@@ -40,7 +40,13 @@ export class UiScene extends Phaser.Scene {
   #pauseLabel!: Phaser.GameObjects.Text;
   
   constructor() {
-    super({ key: "UiScene", active: false });
+    super({ key: "UiScene" });
+  }
+
+  init() {
+    this.#tutorialStep = 0;
+    this.#tutorialCooldown = TUTORIAL_COOLDOWN_MAX;
+    this.systemLabelCooldown = 2;
   }
 
   preload() {
@@ -49,8 +55,6 @@ export class UiScene extends Phaser.Scene {
   }
 
   create() {
-    console.log("UI create");
-
     this.createStatsBox()
 
     this.systemLabel = this.add.text(1280, 700, 'System', {
@@ -85,6 +89,7 @@ export class UiScene extends Phaser.Scene {
     .setVisible(false)
 
     var pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+    pauseKey.removeListener('down');
     pauseKey.on('down', () => {
       eventsManager.emit(EVENTS.PAUSE_GAME)
       this.#pauseLabel.setVisible(!this.#pauseLabel.visible)
@@ -92,17 +97,12 @@ export class UiScene extends Phaser.Scene {
 
     this.createMuteIndicator();
 
-    eventsManager.on(EVENTS.TUTORIAL_ADVANCE, this.advanceTutorial, this)
-    // eventsManager.on(EVENTS.UPDATE_SCORE, this.updateCount, this)
-    eventsManager.on(EVENTS.UPDATE_STATS, this.updateStats, this)
-    eventsManager.on(EVENTS.TOGGLE_MUTE, this.toggleMute, this)
+    eventsManager.addSingletonListener(EVENTS.TUTORIAL_ADVANCE, this.advanceTutorial, this)
+    eventsManager.addSingletonListener(EVENTS.UPDATE_STATS, this.updateStats, this)
+    eventsManager.addSingletonListener(EVENTS.TOGGLE_MUTE, this.toggleMute, this)
   }
 
   createStatsBox() {
-    // this.scoreLabel = this.add.text(10, 10, 'People saved: 0', {
-    //   fontFamily: EIGHTBIT_WONDER,
-    //   fontSize: "32px"
-    // })
     const labelX = 10
     const firstLabelY = 20
     const firstValueY = firstLabelY + 4;
@@ -120,10 +120,6 @@ export class UiScene extends Phaser.Scene {
     this.podsLostLabel = this.add.text(valueX, firstValueY + rowHeight, '0', valueTextStyle).setOrigin(0, .32)
     this.meteorHitsLabel = this.add.text(valueX, firstValueY + rowHeight * 2, '0', valueTextStyle).setOrigin(0, .32)
   }
-
-  // updateCount(count: number) {
-  //   this.scoreLabel.text = `People saved: ${count}`
-  // }
 
   updateStats(stat: STAT_CHANGE, newValue: number) {
     if (stat === STAT_CHANGE.PodEscaped) {
@@ -150,7 +146,7 @@ export class UiScene extends Phaser.Scene {
       this.nextTutorialStep()
     } else if (this.#tutorialStep === 5 && step === TutorialStep.SHIP_SAVED) {
       this.nextTutorialStep()
-      this.#tutorialCooldown = this.#tutorialCooldownMax * 2
+      this.#tutorialCooldown = TUTORIAL_COOLDOWN_MAX * 2
     }
   }
 
@@ -175,7 +171,7 @@ export class UiScene extends Phaser.Scene {
   nextTutorialStep(overrideCooldown: boolean = false) {
     // console.log(this.#tutorialCooldown)
     if (overrideCooldown || this.#tutorialCooldown < 0) {
-      this.#tutorialCooldown = this.#tutorialCooldownMax
+      this.#tutorialCooldown = TUTORIAL_COOLDOWN_MAX
       this.#tutorialStep += 1;
       this.setTutorialLabelToStep()
     }
