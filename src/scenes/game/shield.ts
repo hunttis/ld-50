@@ -7,6 +7,7 @@ export class Shield extends Phaser.GameObjects.Group {
   #xLoc;
   #yLoc;
   #explosionManager: Phaser.GameObjects.Particles.ParticleEmitterManager;
+  #radius;
 
   constructor(
     readonly scene: Phaser.Scene,
@@ -19,11 +20,12 @@ export class Shield extends Phaser.GameObjects.Group {
 
     this.#xLoc = xLoc;
     this.#yLoc = yLoc;
+    this.#radius = radius;
 
     // seg height 8
     const segmentWidth = 48;
 
-    const circumference = radius * 2 * Math.PI;
+    const circumference = this.#radius * 2 * Math.PI;
     const segmentCount = circumference / segmentWidth;
 
     this.cursors = scene.input.keyboard.createCursorKeys();
@@ -31,8 +33,8 @@ export class Shield extends Phaser.GameObjects.Group {
     for (let i = 0; i < segmentCount; i++) {
       const angle = Phaser.Math.DegToRad(i * (360 / segmentCount));
 
-      const x = radius * Math.cos(angle) + xLoc;
-      const y = radius * Math.sin(angle) + yLoc;
+      const x = this.#radius * Math.cos(angle) + xLoc;
+      const y = this.#radius * Math.sin(angle) + yLoc;
 
       const shieldSeg = new ShieldSegment(scene, x, y, angle);
       this.add(shieldSeg);
@@ -71,7 +73,7 @@ export class Shield extends Phaser.GameObjects.Group {
         segments,
         { x: this.#xLoc, y: this.#yLoc },
         angle,
-        150
+        this.#radius
       );
 
       eventsManager.emit(EVENTS.SHIELD_TURNING);
